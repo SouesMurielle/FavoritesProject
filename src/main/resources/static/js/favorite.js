@@ -34,6 +34,11 @@ angular
 
         $scope.favoritesToDelete = [];
 
+        $scope.dateSortCriteria = {
+            asc : "asc",
+            desc : "desc"
+        }
+
         $scope.cancel = function () {
             $scope.setMode("view");
         };
@@ -57,6 +62,22 @@ angular
         };
 
         /* ----- FAVORITES ----- */
+
+        $scope.sortByDate = function () {
+            if (($scope.dateSortCriteria === null) || ($scope.dateSortCriteria === "desc")) {
+                $scope.dateSortCriteria = "asc";
+            } else $scope.dateSortCriteria = "desc"
+            if (($scope.dateSortCriteria !== "asc")) {
+                $http.get("api/date/ASC").then(function (response) {
+                    $scope.favorites = response.data;
+                })
+            } else {
+                $http.get("api/date/DESC").then(function (response) {
+                    $scope.favorites = response.data;
+                })
+            }
+
+        }
 
         $scope.setMode = function (text) {
             if (text === "creationFavorite") {

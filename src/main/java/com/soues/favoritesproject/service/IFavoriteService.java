@@ -2,6 +2,7 @@ package com.soues.favoritesproject.service;
 
 import com.soues.favoritesproject.dto.FavoriteDefinition;
 import com.soues.favoritesproject.dto.FavoriteItem;
+import com.soues.favoritesproject.dto.SortParam;
 
 import java.util.List;
 
@@ -10,9 +11,13 @@ public interface IFavoriteService {
 
     List<FavoriteItem> findAll();
 
+//    List<FavoriteItem> findAll(ItemSortBy sortBy, ItemSortType sortType, Long categoryId);
+
     FavoriteItem findOne(long id);
 
     List<FavoriteItem> findByCategory(long id);
+
+    List<FavoriteItem> findAllByOrderByDate(SortParam sortParam);
 
     FavoriteItem save(FavoriteDefinition favorite, Long categoryId);
 

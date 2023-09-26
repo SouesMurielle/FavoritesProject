@@ -73,7 +73,6 @@ angular
 				});
 
 				$http.get("api/favorite").then(function (response) {
-//					console.log(response);
 					$scope.favorites = response.data.filter(
 						(f) =>
 							$scope.categoryList.filter === 0 ||
@@ -94,7 +93,6 @@ angular
 		    return c.id
 		    })
 		    .indexOf(f.category.id);
-//		    .indexOf($scope.categoryList.filter);
             if (idx < 0) idx = 0;
 
             $scope.setMode('updateFavorite');
@@ -103,7 +101,6 @@ angular
                 id : f.id,
                 label : f.label,
                 link : f.link,
-//                category: f.category.id
                 category: $scope.realCategories[idx].id
             };
 		};
@@ -121,7 +118,6 @@ angular
 						$scope.setMode("view");
 					},
 					function (error) {
-//						alert(error.data.message);
                         Swal.fire({
                             icon : 'error',
                             title : 'Not created!',
@@ -145,7 +141,6 @@ angular
                         $scope.setMode("view");
                     },
                     function (error) {
-//                        alert(error.data.message);
                         Swal.fire({
                             icon : 'error',
                             title : 'Not updated!',
@@ -219,7 +214,6 @@ angular
                                     'success'
                                 )
                             }, function(error) {
-//                               alert(error.data.message);
                                Swal.fire({
                                    icon : 'error',
                                    title : 'Not deleted!',
@@ -257,7 +251,6 @@ angular
 						$scope.setMode("view");
 					},
 					function (error) {
-//						alert(error.data.message);
                         Swal.fire({
                             icon : 'error',
                             title : 'Not created!',
@@ -280,7 +273,6 @@ angular
                         $scope.setMode("view");
                     },
                     function (error) {
-//                        alert(error.data.message);
                         Swal.fire({
                             icon : 'error',
                             title : 'Not updated!',
@@ -301,7 +293,6 @@ angular
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
-//            console.log(result);
                 if (result.isConfirmed) {
                     $http.delete('api/category/' + id).then(
                         function() {
@@ -312,7 +303,6 @@ angular
                                 'success'
                             );
                         }, function(error) {
-//                            alert(error.data.message);
                             Swal.fire({
                                 icon : 'error',
                                 title : 'Not deleted!',

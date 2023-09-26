@@ -17,8 +17,6 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-//    @Service > déclare cette classe comme Service et est gérée par Spring
-//    implements permet de créer un lien direct et en temps réel avec l'interface
 @Transactional
 public class FavoriteService implements IFavoriteService  {
 
@@ -31,18 +29,11 @@ public class FavoriteService implements IFavoriteService  {
     private  DTOHelper helper;
 
     @Override
-    //    permet de surcharger la méthode qui est présente dans l'interface (dans ce qui est "implémenté")
     public List<FavoriteItem> findAll() {
         return favoriteRepository.findAll().stream()
                 .map(helper::toFavoriteItem)
                 .toList();
     }
-//    @Override
-//    public List<FavoriteItem> findAll() {
-//        return favoriteRepository.findAll().stream()
-//                .map(favorite -> new FavoriteItem(favorite.getId(), favorite.getLabel(),favorite.getLink(), favorite.getDate(), favorite.getCategory()))
-//                .toList();
-//    }
 
 
     public FavoriteItem findOne(long id) {

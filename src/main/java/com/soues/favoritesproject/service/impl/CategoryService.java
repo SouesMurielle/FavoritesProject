@@ -34,8 +34,6 @@ public class CategoryService implements ICategoryService {
                 .toList();
     }
 
-
-
     @Override
     public void delete(long id) {
         Category category = categoryRepository.findById(id).orElseThrow(() -> new NotFoundException("Pas trouvé"));
@@ -61,6 +59,3 @@ public class CategoryService implements ICategoryService {
         return helper.toCategoryToListItem(category);
     }
 }
-// @Transactional indique que toutes les methodes que le service contient deviennent transactionnelles.
-// cad historiser toutes les opérations/instructions faites depuis le début de la transaction
-// et être capable de faire marche arrière

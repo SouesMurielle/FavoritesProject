@@ -14,14 +14,12 @@
   <link rel="stylesheet" href="libs/ngDialog/ngDialog.min.css">
   <link rel="stylesheet" href="libs/ngDialog/ngDialog-theme-default.min.css">
   <script src="libs/ngDialog/ngDialog.min.js"></script>
-  <!-- tout ce qui commence par data-ng sert à angular -->
 </head>
 <body data-ng-controller="FavoritesController">
 <section class="section">
   <div class="container">
 
     <h1 class="title">Favorite Manager</h1>
-<!--    <h1 id="menu" href="#" class="title">Favorite Manager</h1>-->
 
     <div class="box" data-ng-if="mode == 'view'">
       <div class="columns">
@@ -224,7 +222,6 @@
                 <a data-ng-href="{{ f.link }}" target="_blank">{{ f.link }}</a>
                 <div class="is-pulled-right">
                   <button class="button is-info mr-1" data-ng-click="setUpdateFavorite(f)">Update</button>
-<!--                  <a class="button is-info mr-1" data-ng-click="setUpdate(f)" href="menu" scroll-on-click>Update</a>-->
                   <button class="button is-danger" data-ng-click="deleteFavorite(f.id)">Delete</button>
                 </div>
               </td>

@@ -34,32 +34,6 @@ angular
 
         $scope.favoritesToDelete = [];
 
-		$scope.setMode = function (text) {
-			if (text === "creationFavorite") {
-				$scope.realCategories = $scope.categories.filter(function (c) {
-					return c.id !== 0;
-				});
-				var idx = $scope.realCategories
-					.map(function (c) {
-						return c.id;
-					})
-					.indexOf($scope.categoryList.filter);
-				if (idx < 0) idx = 0;
-
-				$scope.favorite = {
-					link: "",
-					label: "",
-					categoryList: $scope.realCategories[idx].id
-				};
-			} else if (text === "creationCategory") {
-			    $scope.category = {
-			        label: ""
-			    };
-			}
-
-			$scope.mode = text;
-		};
-
 		$scope.cancel = function () {
 			$scope.setMode("view");
 		};
@@ -83,6 +57,32 @@ angular
 		};
 
 		/* ----- FAVORITES ----- */
+
+		$scope.setMode = function (text) {
+			if (text === "creationFavorite") {
+				$scope.realCategories = $scope.categories.filter(function (c) {
+					return c.id !== 0;
+				});
+				var idx = $scope.realCategories
+					.map(function (c) {
+						return c.id;
+					})
+					.indexOf($scope.categoryList.filter);
+				if (idx < 0) idx = 0;
+
+				$scope.favorite = {
+					link: "",
+					label: "",
+					category: $scope.realCategories[idx].id
+				};
+			} else if (text === "creationCategory") {
+			    $scope.category = {
+			        label: ""
+			    };
+			}
+
+			$scope.mode = text;
+		};
 
 		$scope.setUpdateFavorite = function (f) {
 		    $scope.realCategories = $scope.categories.filter(function(c) {

@@ -69,11 +69,19 @@ angular
             } else $scope.dateSortCriteria = "desc"
             if (($scope.dateSortCriteria !== "asc")) {
                 $http.get("api/date/ASC").then(function (response) {
-                    $scope.favorites = response.data;
+                    $scope.favorites = response.data.filter(
+                        (f) =>
+                            $scope.categoryList.filter === 0 ||
+                            f.category.id === $scope.categoryList.filter
+                    );
                 })
             } else {
                 $http.get("api/date/DESC").then(function (response) {
-                    $scope.favorites = response.data;
+                    $scope.favorites = response.data.filter(
+                        (f) =>
+                            $scope.categoryList.filter === 0 ||
+                            f.category.id === $scope.categoryList.filter
+                    );
                 })
             }
 

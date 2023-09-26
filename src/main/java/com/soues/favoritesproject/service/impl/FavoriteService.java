@@ -2,6 +2,7 @@ package com.soues.favoritesproject.service.impl;
 
 import com.soues.favoritesproject.dto.FavoriteDefinition;
 import com.soues.favoritesproject.dto.FavoriteItem;
+import com.soues.favoritesproject.dto.SortParam;
 import com.soues.favoritesproject.exception.NotFoundException;
 import com.soues.favoritesproject.persistence.entity.Category;
 import com.soues.favoritesproject.persistence.entity.Favorite;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @Transactional
@@ -35,18 +37,33 @@ public class FavoriteService implements IFavoriteService  {
                 .toList();
     }
 
-
+    @Override
     public FavoriteItem findOne(long id) {
         Favorite favorite = favoriteRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Pas trouvé"));
         return helper.toFavoriteItem(favorite);
     }
 
+    @Override
     public List<FavoriteItem> findByCategory(long id) {
         return favoriteRepository.findAll()
                 .stream()
                 .map(helper::toFavoriteItem)
                 .filter(favorite -> favorite.getCategory().getId().equals(id))
+                .toList();
+    }
+
+    @Override
+    public List<FavoriteItem> findAllByOrderByDate(SortParam sortParam) {
+        List<Favorite> list;
+        if (sortParam.equals(SortParam.ASC))
+            list = favoriteRepository.findAllByOrderByDateAsc();
+        else
+            list = favoriteRepository.findAllByOrderByDateDesc();
+
+        return list
+                .stream()
+                .map(helper::toFavoriteItem)
                 .toList();
     }
 
@@ -77,7 +94,7 @@ public class FavoriteService implements IFavoriteService  {
     @Override
     public void delete(long id) {
         Favorite favorite = favoriteRepository.findById(id).orElseThrow(() -> new NotFoundException("Pas trouvé"));
-            favoriteRepository.deleteById(favorite.getId());
+        favoriteRepository.deleteById(favorite.getId());
     }
 
     @Override

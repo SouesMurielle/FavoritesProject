@@ -23,14 +23,11 @@ public class Favorite {
     @Column(name = "label", length=100)
     private String label;
 
-
     @Column(name = "link")
     private String link;
 
-
     @Column(name = "Update_at", columnDefinition = "date")
     private Date date;
-
 
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(nullable = false)

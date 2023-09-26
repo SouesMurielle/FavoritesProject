@@ -1,6 +1,6 @@
 angular
-	.module("favoriteApp", [])
-	.directive('scrollOnClick', function() {
+    .module("favoriteApp", [])
+    .directive('scrollOnClick', function() {
         return {
             restrict: 'A',
             link: function(scope, $elm, attrs) {
@@ -17,82 +17,82 @@ angular
             }
         }
     })
-	.controller("FavoritesController", function ($scope, $http) {
-		$scope.categories = [];
-		$scope.realCategories = [];
-		$scope.favorites = [];
+    .controller("FavoritesController", function ($scope, $http) {
+        $scope.categories = [];
+        $scope.realCategories = [];
+        $scope.favorites = [];
 
-		$scope.categoryList = {
-		    filter : 0
-		};
+        $scope.categoryList = {
+            filter : 0
+        };
 
-		$scope.mode = "view";
+        $scope.mode = "view";
 
-		$scope.favorite = {};
+        $scope.favorite = {};
 
-		$scope.category = {};
+        $scope.category = {};
 
         $scope.favoritesToDelete = [];
 
-		$scope.cancel = function () {
-			$scope.setMode("view");
-		};
+        $scope.cancel = function () {
+            $scope.setMode("view");
+        };
 
-		$scope.refresh = function () {
-			$http.get("api/category").then(function (response) {
-				$scope.categories = [{ id: 0, label: "All", references: 0 }];
-				response.data.forEach((d) => {
-					$scope.categories.push(d);
-					$scope.categories[0].references += d.references;
-				});
+        $scope.refresh = function () {
+            $http.get("api/category").then(function (response) {
+                $scope.categories = [{ id: 0, label: "All", references: 0 }];
+                response.data.forEach((d) => {
+                    $scope.categories.push(d);
+                    $scope.categories[0].references += d.references;
+                });
 
-				$http.get("api/favorite").then(function (response) {
-					$scope.favorites = response.data.filter(
-						(f) =>
-							$scope.categoryList.filter === 0 ||
-							f.category.id === $scope.categoryList.filter
-					);
-				});
-			});
-		};
+                $http.get("api/favorite").then(function (response) {
+                    $scope.favorites = response.data.filter(
+                        (f) =>
+                            $scope.categoryList.filter === 0 ||
+                            f.category.id === $scope.categoryList.filter
+                    );
+                });
+            });
+        };
 
-		/* ----- FAVORITES ----- */
+        /* ----- FAVORITES ----- */
 
-		$scope.setMode = function (text) {
-			if (text === "creationFavorite") {
-				$scope.realCategories = $scope.categories.filter(function (c) {
-					return c.id !== 0;
-				});
-				var idx = $scope.realCategories
-					.map(function (c) {
-						return c.id;
-					})
-					.indexOf($scope.categoryList.filter);
-				if (idx < 0) idx = 0;
+        $scope.setMode = function (text) {
+            if (text === "creationFavorite") {
+                $scope.realCategories = $scope.categories.filter(function (c) {
+                    return c.id !== 0;
+                });
+                var idx = $scope.realCategories
+                    .map(function (c) {
+                        return c.id;
+                    })
+                    .indexOf($scope.categoryList.filter);
+                if (idx < 0) idx = 0;
 
-				$scope.favorite = {
-					link: "",
-					label: "",
-					category: $scope.realCategories[idx].id
-				};
-			} else if (text === "creationCategory") {
-			    $scope.category = {
-			        label: ""
-			    };
-			}
+                $scope.favorite = {
+                    link: "",
+                    label: "",
+                    category: $scope.realCategories[idx].id
+                };
+            } else if (text === "creationCategory") {
+                $scope.category = {
+                    label: ""
+                };
+            }
 
-			$scope.mode = text;
-		};
+            $scope.mode = text;
+        };
 
-		$scope.setUpdateFavorite = function (f) {
-		    $scope.realCategories = $scope.categories.filter(function(c) {
-		    return c.id !== 0
-		    });
-		    var idx = $scope.realCategories
-		    .map(function(c) {
-		    return c.id
-		    })
-		    .indexOf(f.category.id);
+        $scope.setUpdateFavorite = function (f) {
+            $scope.realCategories = $scope.categories.filter(function(c) {
+                return c.id !== 0
+            });
+            var idx = $scope.realCategories
+                .map(function(c) {
+                    return c.id
+                })
+                .indexOf(f.category.id);
             if (idx < 0) idx = 0;
 
             $scope.setMode('updateFavorite');
@@ -103,32 +103,32 @@ angular
                 link : f.link,
                 category: $scope.realCategories[idx].id
             };
-		};
+        };
 
-		$scope.createFavorite = function () {
-			$http
-				.post("api/" + $scope.favorite.category + "/favorite", {
-					id: null,
-					label: $scope.favorite.label,
-					link: $scope.favorite.link,
-				})
-				.then(
-					function () {
-						$scope.refresh();
-						$scope.setMode("view");
-					},
-					function (error) {
+        $scope.createFavorite = function () {
+            $http
+                .post("api/" + $scope.favorite.category + "/favorite", {
+                    id: null,
+                    label: $scope.favorite.label,
+                    link: $scope.favorite.link,
+                })
+                .then(
+                    function () {
+                        $scope.refresh();
+                        $scope.setMode("view");
+                    },
+                    function (error) {
                         Swal.fire({
                             icon : 'error',
                             title : 'Not created!',
                             text : 'Your category hasn\'t been created.',
                             footer : error.data.message
                         });
-					}
-				);
-		};
+                    }
+                );
+        };
 
-		$scope.updateFavorite = function() {
+        $scope.updateFavorite = function() {
             $http
                 .post("api/" + $scope.favorite.category + "/favorite", {
                     id: $scope.favorite.id,
@@ -149,7 +149,7 @@ angular
                         });
                     }
                 );
-		}
+        }
 
         $scope.deleteFavorite = function(id) {
             Swal.fire({
@@ -170,17 +170,17 @@ angular
                                 'Your favorite has been deleted.',
                                 'success'
                             )
-                                  }, function(error) {
-                                      alert(error.data.message);
-                                      Swal.fire({
-                                          icon : 'error',
-                                          title : 'Not deleted!',
-                                          text : 'Your category hasn\'t been deleted.',
-                                          footer : error.data.message
-                                      });
-                                  }
+                        }, function(error) {
+                            alert(error.data.message);
+                            Swal.fire({
+                                icon : 'error',
+                                title : 'Not deleted!',
+                                text : 'Your category hasn\'t been deleted.',
+                                footer : error.data.message
+                            });
+                        }
                     )
-              }
+                }
             })
         }
 
@@ -191,7 +191,7 @@ angular
         $scope.countChecked = function () {
             return selectedFavorites().length;
         }
-        
+
         $scope.deleteMultiple = function() {
             $scope.favoritesToDelete = selectedFavorites().map((f) => f.id);
             if ($scope.favoritesToDelete.length == 0) {
@@ -213,29 +213,29 @@ angular
                         $http
                             .delete('api/favorite/' + $scope.favoritesToDelete.join('-'))
                             .then(function() {
-                                $scope.refresh();
-                                Swal.fire(
-                                    'Deleted!',
-                                    'Yours favorites has been deleted.',
-                                    'success'
-                                )
-                            }, function(error) {
-                               Swal.fire({
-                                   icon : 'error',
-                                   title : 'Not deleted!',
-                                   text : 'Your category hasn\'t been deleted.',
-                                   footer : error.data.message
-                               });
-                           }
+                                    $scope.refresh();
+                                    Swal.fire(
+                                        'Deleted!',
+                                        'Yours favorites has been deleted.',
+                                        'success'
+                                    )
+                                }, function(error) {
+                                    Swal.fire({
+                                        icon : 'error',
+                                        title : 'Not deleted!',
+                                        text : 'Your category hasn\'t been deleted.',
+                                        footer : error.data.message
+                                    });
+                                }
                             );
-                  }
+                    }
                 })
             }
         }
 
         /* ----- CATEGORIES ----- */
 
-		$scope.setUpdateCategory = function (cat) {
+        $scope.setUpdateCategory = function (cat) {
 
             $scope.setMode('updateCategory');
 
@@ -243,31 +243,31 @@ angular
                 id : cat.id,
                 label : cat.label
             };
-		}
+        }
 
-		$scope.createCategory = function () {
-			$http
-				.post("api/category", {
-					id: null,
-					label: $scope.category.label
-				})
-				.then(
-					function () {
-						$scope.refresh();
-						$scope.setMode("view");
-					},
-					function (error) {
+        $scope.createCategory = function () {
+            $http
+                .post("api/category", {
+                    id: null,
+                    label: $scope.category.label
+                })
+                .then(
+                    function () {
+                        $scope.refresh();
+                        $scope.setMode("view");
+                    },
+                    function (error) {
                         Swal.fire({
                             icon : 'error',
                             title : 'Not created!',
                             text : 'Your category hasn\'t been created.',
                             footer : error.data.message
                         });
-					}
-				);
-		};
+                    }
+                );
+        };
 
-		$scope.updateCategory = function() {
+        $scope.updateCategory = function() {
             $http
                 .post("api/category", {
                     id: $scope.category.id,
@@ -287,7 +287,7 @@ angular
                         });
                     }
                 );
-		}
+        }
 
         $scope.deleteCategory = function(id) {
             Swal.fire({
@@ -326,5 +326,5 @@ angular
 //            return (item.label + (item.id != 0 ? ' (' + item.references + ')' : ''));
         }
 
-		$scope.refresh();
-	});
+        $scope.refresh();
+    });

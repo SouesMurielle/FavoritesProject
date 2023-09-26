@@ -183,16 +183,22 @@ angular
               }
             })
         }
+
+        function selectedFavorites() {
+            return $scope.favorites.filter((f) => f.selected === true);
+        }
+
+        $scope.countChecked = function () {
+            return selectedFavorites().length;
+        }
         
         $scope.deleteMultiple = function() {
-            $scope.favoritesToDelete = $scope.favorites.filter( (f) => f.selected === true );
-            $scope.favoritesToDelete = $scope.favoritesToDelete.map((f) => f.id);
+            $scope.favoritesToDelete = selectedFavorites().map((f) => f.id);
             if ($scope.favoritesToDelete.length == 0) {
                 Swal.fire(
                     'No favorite selected!',
                     'Please select at least one favorite'
                 )
-
             } else {
                 Swal.fire({
                     title: 'Are you sure?',

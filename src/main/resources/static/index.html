@@ -79,7 +79,7 @@
           <button class="button is-primary is-fullwidth" data-ng-click="setMode('creationFavorite')">Add</button>
         </div>
         <div class="column is-narrow is-one-fifth">
-          <button class="button is-danger is-fullwidth" data-ng-click="deleteMultiple()">Delete multiple</button>
+          <button class="button is-danger is-fullwidth" data-ng-click="deleteMultiple()" data-ng-disabled="countChecked() == 0">Delete multiple</button>
         </div>
       </div>
     </div>
@@ -214,6 +214,7 @@
             </tr>
             <tr data-ng-repeat="f in favorites | orderBy: sortCriteria">
               <td> <input class="has-text-centered is-vcentered" type="checkbox" data-ng-model="f.selected"></td>
+<!--              <td> <input class="has-text-centered is-vcentered" type="checkbox" data-ng-model="f.selected"></td>-->
               <td class="has-text-centered is-vcentered">{{ f.id }}</td>
               <td class="is-narrow has-text-centered is-vcentered">{{ f.label }}</td>
               <td>

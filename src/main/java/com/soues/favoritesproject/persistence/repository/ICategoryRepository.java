@@ -5,5 +5,3 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ICategoryRepository extends JpaRepository<Category, Long> {
 }
-
-// On a besoin de récupérer les categories donc on fait un repository des categories

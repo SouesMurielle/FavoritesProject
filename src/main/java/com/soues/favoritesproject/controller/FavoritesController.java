@@ -19,14 +19,12 @@ public class FavoritesController {
     public FavoritesController(IFavoriteService favoriteService) {
         this.favoriteService = favoriteService;
     }
-//    Constructeur généré automatiquement
-//    Peut etre remplacé par @Autowired avant la ligne 15, mais c'est une meilleure pratique d'utiliser le constructeur
+
 
     @GetMapping(path = "/favorite")
     List<FavoriteItem> findAll() {
         return favoriteService.findAll();
     }
-    //    Fait l'association entre/mappe la méthode GET http et la méthode java choisie, ici findAll()
 
 
     @GetMapping(path = "/{id}")

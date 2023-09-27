@@ -33,9 +33,13 @@ public class FavoritesController {
     }
 
 
-    @GetMapping(path = "/date/{sortParam}")
+    @GetMapping(path = "/dateOrder/{sortParam}")
     List<FavoriteItem> findAllOrderByDate(@PathVariable(name = "sortParam") SortParam sortParam) {
         return favoriteService.findAllByOrderByDate(sortParam);
+    }
+    @GetMapping(path = "/categoryOrder/{sortParam}")
+    List<FavoriteItem> findAllOrderByCategoryLabel(@PathVariable(name = "sortParam") SortParam sortParam) {
+        return favoriteService.findAllByOrderByCategoryLabel(sortParam);
     }
 
     @PostMapping(path = "/{categoryId}/favorite")

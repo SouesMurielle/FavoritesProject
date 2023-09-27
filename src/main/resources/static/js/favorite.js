@@ -39,6 +39,11 @@ angular
             desc : "desc"
         }
 
+        $scope.categorySortCriteria = {
+            asc : "asc",
+            desc : "desc"
+        }
+
         $scope.cancel = function () {
             $scope.setMode("view");
         };
@@ -68,7 +73,7 @@ angular
                 $scope.dateSortCriteria = "asc";
             } else $scope.dateSortCriteria = "desc"
             if (($scope.dateSortCriteria !== "asc")) {
-                $http.get("api/date/ASC").then(function (response) {
+                $http.get("api/dateOrder/ASC").then(function (response) {
                     $scope.favorites = response.data.filter(
                         (f) =>
                             $scope.categoryList.filter === 0 ||
@@ -76,7 +81,7 @@ angular
                     );
                 })
             } else {
-                $http.get("api/date/DESC").then(function (response) {
+                $http.get("api/dateOrder/DESC").then(function (response) {
                     $scope.favorites = response.data.filter(
                         (f) =>
                             $scope.categoryList.filter === 0 ||
@@ -84,7 +89,29 @@ angular
                     );
                 })
             }
+        }
 
+        $scope.sortByCategory = function () {
+            if (($scope.categorySortCriteria === null) || ($scope.categorySortCriteria === "desc")) {
+                $scope.categorySortCriteria = "asc";
+            } else $scope.categorySortCriteria = "desc"
+            if (($scope.categorySortCriteria !== "asc")) {
+                $http.get("api/categoryOrder/ASC").then(function (response) {
+                    $scope.favorites = response.data.filter(
+                        (f) =>
+                            $scope.categoryList.filter === 0 ||
+                            f.category.id === $scope.categoryList.filter
+                    );
+                })
+            } else {
+                $http.get("api/categoryOrder/DESC").then(function (response) {
+                    $scope.favorites = response.data.filter(
+                        (f) =>
+                            $scope.categoryList.filter === 0 ||
+                            f.category.id === $scope.categoryList.filter
+                    );
+                })
+            }
         }
 
         $scope.setMode = function (text) {

@@ -11,8 +11,8 @@ public interface IFavoriteRepository extends JpaRepository<Favorite, Long> {
 
     List<Favorite> findAllByOrderByDateAsc();
     List<Favorite> findAllByOrderByDateDesc();
-//    List<Favorite> findAllByOrderByCategoryNameAsc();
-//    List<Favorite> findAllByOrderByCategoryNameDesc();
+    List<Favorite> findAllByOrderByCategoryLabelAsc();
+    List<Favorite> findAllByOrderByCategoryLabelDesc();
 //    List<Favorite> findByCategoryIdOrderByUpdatedAtDesc(Long categoryId);
 //    List<Favorite> findByCategoryIdOrderByUpdatedAtAsc(Long categoryId);
 //    List<Favorite> findByCategoryIdOrderByCategoryNameDesc(Long categoryId);

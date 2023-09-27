@@ -190,6 +190,7 @@ angular
                     id: $scope.favorite.id,
                     label: $scope.favorite.label,
                     link: $scope.favorite.link
+                    //TEST
                 })
                 .then(
                     function () {

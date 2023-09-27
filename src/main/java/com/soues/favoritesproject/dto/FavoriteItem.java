@@ -16,4 +16,6 @@ public class FavoriteItem {
     private String link;
     private Date date;
     private Category category;
+    private boolean validity;
+
 }

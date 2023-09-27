@@ -11,11 +11,9 @@ public interface IFavoriteService {
 
     List<FavoriteItem> findAll();
 
-//    List<FavoriteItem> findAll(ItemSortBy sortBy, ItemSortType sortType, Long categoryId);
-
     FavoriteItem findOne(long id);
 
-    List<FavoriteItem> findByCategory(long id);
+    List<FavoriteItem> findAllByCategory(long id);
 
     List<FavoriteItem> findAllByOrderByDate(SortParam sortParam);
 

@@ -13,7 +13,6 @@ import com.soues.favoritesproject.utils.DTOHelper;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.Date;
 import java.util.List;
 
@@ -45,7 +44,7 @@ public class FavoriteService implements IFavoriteService  {
     }
 
     @Override
-    public List<FavoriteItem> findByCategory(long id) {
+    public List<FavoriteItem> findAllByCategory(long id) {
         return favoriteRepository.findAll()
                 .stream()
                 .map(helper::toFavoriteItem)

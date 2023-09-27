@@ -44,7 +44,7 @@ public class FavoritesController {
 
     @PostMapping(path = "/{categoryId}/favorite")
     FavoriteItem save(@RequestBody FavoriteDefinition favorite, @PathVariable(name = "categoryId") long categoryId) {
-        return favoriteService.save(favorite, categoryId);
+        return favoriteService.save(favorite, categoryId, true);
     }
 
     @DeleteMapping(path = "/favorite/{ids}")

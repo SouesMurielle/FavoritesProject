@@ -2,7 +2,8 @@ package com.soues.favoritesproject.service.impl;
 
 import com.soues.favoritesproject.dto.FavoriteDefinition;
 import com.soues.favoritesproject.dto.FavoriteItem;
-import com.soues.favoritesproject.dto.SortParam;
+import com.soues.favoritesproject.dto.SortBy;
+import com.soues.favoritesproject.dto.SortType;
 import com.soues.favoritesproject.exception.NotFoundException;
 import com.soues.favoritesproject.persistence.entity.Category;
 import com.soues.favoritesproject.persistence.entity.Favorite;
@@ -52,13 +53,19 @@ public class FavoriteService implements IFavoriteService  {
                 .toList();
     }
 
-    @Override
-    public List<FavoriteItem> findAllByOrderByDate(SortParam sortParam) {
+    public List<FavoriteItem> findAllByOrder(SortType sortType, SortBy sortBy) {
         List<Favorite> list;
-        if (sortParam.equals(SortParam.ASC))
-            list = favoriteRepository.findAllByOrderByDateAsc();
+
+        if (sortType.equals(SortType.category))
+                if (sortBy.equals(SortBy.ASC))
+                    list = favoriteRepository.findAllByOrderByCategoryLabelAsc();
+                else
+                    list = favoriteRepository.findAllByOrderByCategoryLabelDesc();
         else
-            list = favoriteRepository.findAllByOrderByDateDesc();
+            if (sortBy.equals(SortBy.ASC))
+                list = favoriteRepository.findAllByOrderByDateAsc();
+            else
+                list = favoriteRepository.findAllByOrderByDateDesc();
 
         return list
                 .stream()
@@ -67,17 +74,19 @@ public class FavoriteService implements IFavoriteService  {
     }
 
     @Override
-    public List<FavoriteItem> findAllByOrderByCategoryLabel(SortParam sortParam) {
-        List<Favorite> list;
-        if (sortParam.equals(SortParam.ASC))
-            list = favoriteRepository.findAllByOrderByCategoryLabelAsc();
+    public List<FavoriteItem> findAllByOrderByDate(SortBy sortBy) {
+        if (sortBy.equals(SortBy.ASC))
+            return findAllByOrder(SortType.date, SortBy.ASC);
         else
-            list = favoriteRepository.findAllByOrderByCategoryLabelDesc();
+            return findAllByOrder(SortType.date, SortBy.DESC);
+    }
 
-        return list
-                .stream()
-                .map(helper::toFavoriteItem)
-                .toList();
+    @Override
+    public List<FavoriteItem> findAllByOrderByCategoryLabel(SortBy sortBy) {
+        if (sortBy.equals(SortBy.ASC))
+            return findAllByOrder(SortType.category, SortBy.ASC);
+        else
+            return findAllByOrder(SortType.category, SortBy.DESC);
     }
 
     @Override

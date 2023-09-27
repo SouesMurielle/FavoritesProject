@@ -162,6 +162,22 @@ angular
         };
 
         $scope.createFavorite = function () {
+        var url = $scope.favorite.link;
+                    // Vérifiez si l'URL commence par "http://" ou "https://"
+                    if ( ! url.startsWith ("http://") && ! url.startsWith ("https://"))
+                        url = "https://" + url ;  // Si ce n'est pas le cas, ajoutez "https://"
+                        // Regex pour valider une URL
+                        var urlPattern = /^(?!.*\.\.)[A-Za-z0-9-.:/]+$/i;
+                        // Test de l'URL / regex
+
+                        if (!urlPattern.test(url)){
+                        //console.log(url);
+                        Swal.fire({icon: 'error',
+                        title: 'Invalid URL',
+                        text: 'Please enter a valid URL',
+                        })
+                        }
+                        else {
             $http
                 .post("api/" + $scope.favorite.category + "/favorite", {
                     id: null,
@@ -182,7 +198,7 @@ angular
                         });
                     }
                 );
-        };
+        }};
 
         $scope.updateFavorite = function() {
             $http

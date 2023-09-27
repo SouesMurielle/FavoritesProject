@@ -90,7 +90,7 @@ public class FavoriteService implements IFavoriteService  {
     }
 
     @Override
-    public FavoriteItem save(FavoriteDefinition definition, Long categoryId) {
+    public FavoriteItem save(FavoriteDefinition definition, Long categoryId, boolean isValid) {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new NotFoundException("Pas trouvé"));
 
@@ -107,6 +107,7 @@ public class FavoriteService implements IFavoriteService  {
         favorite.setLink(definition.getLink());
         favorite.setLabel(definition.getLabel());
         favorite.setDate(new Date());
+        favorite.setValidity(isValid);
 
         favorite = favoriteRepository.save(favorite);
 

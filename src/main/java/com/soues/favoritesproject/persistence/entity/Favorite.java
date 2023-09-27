@@ -33,4 +33,7 @@ public class Favorite {
     @JoinColumn(nullable = false)
     private Category category;
 
+    @Column(name = "validity", nullable = false)
+    private Boolean validity;
+
 }

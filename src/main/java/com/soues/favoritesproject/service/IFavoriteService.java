@@ -19,6 +19,8 @@ public interface IFavoriteService {
 
     List<FavoriteItem> findAllByOrderByDate(SortParam sortParam);
 
+    List<FavoriteItem> findAllByOrderByCategoryLabel(SortParam sortParam);
+
     FavoriteItem save(FavoriteDefinition favorite, Long categoryId);
 
     void delete(long id);

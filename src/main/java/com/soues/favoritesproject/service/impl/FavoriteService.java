@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 @Transactional
@@ -24,6 +23,7 @@ public class FavoriteService implements IFavoriteService  {
 
     @Autowired
     private IFavoriteRepository favoriteRepository;
+
     @Autowired
     private ICategoryRepository categoryRepository;
 
@@ -68,6 +68,20 @@ public class FavoriteService implements IFavoriteService  {
     }
 
     @Override
+    public List<FavoriteItem> findAllByOrderByCategoryLabel(SortParam sortParam) {
+        List<Favorite> list;
+        if (sortParam.equals(SortParam.ASC))
+            list = favoriteRepository.findAllByOrderByCategoryLabelAsc();
+        else
+            list = favoriteRepository.findAllByOrderByCategoryLabelDesc();
+
+        return list
+                .stream()
+                .map(helper::toFavoriteItem)
+                .toList();
+    }
+
+    @Override
     public FavoriteItem save(FavoriteDefinition definition, Long categoryId) {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new NotFoundException("Pas trouvé"));
@@ -100,7 +114,6 @@ public class FavoriteService implements IFavoriteService  {
     @Override
     public void deleteMultiple(List<Long> ids) {
         ids.forEach(this::delete);
-        //ids.forEach(id -> delete(id));
     }
 
 

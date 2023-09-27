@@ -15,12 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-// indique que c'est un controller. Cette classe doit etre géré par Spring et elle exposera des services
 @RequestMapping(path = "/api/category")
-// sert à indiquer l'adresse de contact, à quelle adresse le service est appelable/joignable c'est le n point du service
-// associe toutes les requetes xxxMapping arrivent ici
 @CrossOrigin(origins = {"http://localhost:8080", "127.0.0.1:8080"})
-// indique les adresses+port où se connecter
 public class CategoriesController {
 
     @Autowired
@@ -35,8 +31,8 @@ public class CategoriesController {
     }
 
     @GetMapping(path = "/{category}")
-    List<FavoriteItem> findByCategory(@PathVariable(name = "category") long id) {
-        return favoriteService.findByCategory(id);
+    List<FavoriteItem> findAllByCategory(@PathVariable(name = "category") long id) {
+        return favoriteService.findAllByCategory(id);
     }
 
     @PostMapping

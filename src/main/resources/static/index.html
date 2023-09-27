@@ -14,14 +14,12 @@
   <link rel="stylesheet" href="libs/ngDialog/ngDialog.min.css">
   <link rel="stylesheet" href="libs/ngDialog/ngDialog-theme-default.min.css">
   <script src="libs/ngDialog/ngDialog.min.js"></script>
-  <!-- tout ce qui commence par data-ng sert à angular -->
 </head>
 <body data-ng-controller="FavoritesController">
 <section class="section">
   <div class="container">
 
     <h1 class="title">Favorite Manager</h1>
-<!--    <h1 id="menu" href="#" class="title">Favorite Manager</h1>-->
 
     <div class="box" data-ng-if="mode == 'view'">
       <div class="columns">
@@ -81,7 +79,7 @@
           <button class="button is-primary is-fullwidth" data-ng-click="setMode('creationFavorite')">Add</button>
         </div>
         <div class="column is-narrow is-one-fifth">
-          <button class="button is-danger is-fullwidth" data-ng-click="deleteMultiple()">Delete multiple</button>
+          <button class="button is-danger is-fullwidth" data-ng-click="deleteMultiple()" data-ng-disabled="countChecked() == 0">Delete multiple</button>
         </div>
       </div>
     </div>
@@ -123,7 +121,6 @@
     </div>
 
     <div class="box" data-ng-if="mode == 'updateFavorite'">
-      <!--    <div class="box" id = "updateTitle" data-ng-if="mode == 'update'">-->
       <div class="columns">
         <div class="column">
           <h2 class="title">Update of a Favorite</h2>
@@ -178,7 +175,6 @@
     </div>
 
     <div class="box" data-ng-if="mode == 'updateCategory'">
-<!--    <div class="box" id = "updateTitle" data-ng-if="mode == 'update'">-->
       <div class="columns">
         <div class="column">
           <h2 class="title">Update of a Category</h2>
@@ -207,8 +203,8 @@
               <th class="is-narrow has-text-centered is-vcentered">ID</th>
               <th class=" has-text-centered is-vcentered">Label</th>
               <th class="has-text-centered is-vcentered">Link</th>
-              <th class="is-narrow has-text-centered is-vcentered">Category</th>
-              <th class="is-narrow has-text-centered is-vcentered">Last Update</th>
+              <th class="is-narrow has-text-centered is-vcentered" data-ng-click="sortByCategory()">Category</th>
+              <th class="is-narrow has-text-centered is-vcentered" data-ng-click="sortByDate()">Last Update</th>
             </tr>
             </thead>
 
@@ -224,7 +220,6 @@
                 <a data-ng-href="{{ f.link }}" target="_blank">{{ f.link }}</a>
                 <div class="is-pulled-right">
                   <button class="button is-info mr-1" data-ng-click="setUpdateFavorite(f)">Update</button>
-<!--                  <a class="button is-info mr-1" data-ng-click="setUpdate(f)" href="menu" scroll-on-click>Update</a>-->
                   <button class="button is-danger" data-ng-click="deleteFavorite(f.id)">Delete</button>
                 </div>
               </td>

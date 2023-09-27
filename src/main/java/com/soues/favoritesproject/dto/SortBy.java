@@ -1,5 +1,5 @@
 package com.soues.favoritesproject.dto;
 
-public enum SortParam {
+public enum SortBy {
     ASC, DESC
 }

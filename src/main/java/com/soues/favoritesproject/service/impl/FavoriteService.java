@@ -11,6 +11,7 @@ import com.soues.favoritesproject.persistence.repository.ICategoryRepository;
 import com.soues.favoritesproject.persistence.repository.IFavoriteRepository;
 import com.soues.favoritesproject.service.IFavoriteService;
 import com.soues.favoritesproject.utils.DTOHelper;
+import com.soues.favoritesproject.utils.UtilsFavorites;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -90,7 +91,7 @@ public class FavoriteService implements IFavoriteService  {
     }
 
     @Override
-    public FavoriteItem save(FavoriteDefinition definition, Long categoryId, boolean isValid) {
+    public FavoriteItem save(FavoriteDefinition definition, Long categoryId) {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new NotFoundException("Pas trouvé"));
 
@@ -106,8 +107,10 @@ public class FavoriteService implements IFavoriteService  {
         favorite.setCategory(category);
         favorite.setLink(definition.getLink());
         favorite.setLabel(definition.getLabel());
-        favorite.setDate(new Date());
-        favorite.setValidity(isValid);
+        if(favorite.getDate()==null){
+            favorite.setDate(new Date());
+        }
+        favorite.setValidity(UtilsFavorites.CheckValidityURL(definition.getLink()));
 
         favorite = favoriteRepository.save(favorite);
 

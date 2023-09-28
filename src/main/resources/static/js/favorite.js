@@ -18,6 +18,7 @@ angular
         }
     })
     .controller("FavoritesController", function ($scope, $http) {
+
         $scope.categories = [];
         $scope.realCategories = [];
         $scope.favorites = [];
@@ -26,7 +27,7 @@ angular
             filter : 0
         };
 
-        $scope.mode = "view";
+        $scope.mode = "favoritesView";
 
         $scope.favorite = {};
 
@@ -45,7 +46,11 @@ angular
         }
 
         $scope.cancel = function () {
-            $scope.setMode("view");
+            $scope.setMode("favoritesView");
+        };
+
+        $scope.cancelCategory = function () {
+            $scope.setMode("categoryView");
         };
 
         $scope.refresh = function () {
@@ -116,6 +121,7 @@ angular
 
         $scope.setMode = function (text) {
             if (text === "creationFavorite") {
+                toggleActiveTab(1);
                 $scope.realCategories = $scope.categories.filter(function (c) {
                     return c.id !== 0;
                 });
@@ -131,14 +137,35 @@ angular
                     label: "",
                     category: $scope.realCategories[idx].id
                 };
+            } else if (text === "favoritesView") {
+                toggleActiveTab(1);
+            } else if (text === "updateFavorite") {
+                toggleActiveTab(1);
             } else if (text === "creationCategory") {
-                $scope.category = {
-                    label: ""
-                };
+                toggleActiveTab(2);
+            } else if (text === "categoryView") {
+                toggleActiveTab(2);
+            } else if (text === "updateCategory") {
+                toggleActiveTab(2);
             }
 
             $scope.mode = text;
         };
+
+        function toggleActiveTab(id) {
+            var favoritesTab = document.getElementById("favoritesTab");
+            var categoriesTab = document.getElementById("categoriesTab");
+            if (id === 1) {
+                favoritesTab.classList.add("is-active");
+                if (categoriesTab.classList.contains("is-active"))
+                    categoriesTab.classList.remove("is-active");
+            }
+            if (id === 2) {
+                categoriesTab.classList.add("is-active");
+                if (favoritesTab.classList.contains("is-active"))
+                    favoritesTab.classList.remove("is-active");
+            }
+        }
 
         $scope.setUpdateFavorite = function (f) {
             $scope.realCategories = $scope.categories.filter(function(c) {
@@ -162,15 +189,15 @@ angular
         };
 
         $scope.createFavorite = function () {
-        var url = $scope.favorite.link;
-                    // Vérifie si l'URL commence par "http://" ou "https://"
-                    if ( ! url.startsWith ("http://") && ! url.startsWith ("https://"))
-                        // Si ce n'est pas le cas, ajoute "https://"
-                        url = "https://" + url ;
-                        // Regex pour valider une URL
-                        //var urlPattern = /^(?!.*\.\.)[A-Za-z0-9-.:/]+$/i;
-                        var urlPattern = /^(?!.*\.\.)[A-Za-z0-9-:/]+\.([A-Za-z]{2,}|localhost)(\/[^\s]*)*$/i;
-                        // Test de l'URL / regex
+            var url = $scope.favorite.link;
+            // Vérifie si l'URL commence par "http://" ou "https://"
+            if ( ! url.startsWith ("http://") && ! url.startsWith ("https://"))
+                // Si ce n'est pas le cas, ajoute "https://"
+                url = "https://" + url ;
+            // Regex pour valider une URL
+            var urlPattern = /^([a-zA-Z0-9]+[\.-:]+?[\/]*)([a-zA-Z0-9]+[\.\/-]?)*([a-zA-Z0-9]+[\/-]?)$/;
+            // var urlPattern = /^(?!.*\.\.)[A-Za-z0-9-:/]+\.([A-Za-z]{2,}|localhost)(\/[^\s]*)*$/i;
+            // Test de l'URL / regex
 
             if (!urlPattern.test(url)){
                 Swal.fire({icon: 'error',
@@ -188,7 +215,7 @@ angular
                     .then(
                         function () {
                             $scope.refresh();
-                            $scope.setMode("view");
+                            $scope.setMode("favoritesView");
                             Swal.fire(
                                 'success',
                                 'Your favorite has been created.',
@@ -215,7 +242,7 @@ angular
                 .then(
                     function () {
                         $scope.refresh();
-                        $scope.setMode("view");
+                        $scope.setMode("favoritesView");
                     },
                     function (error) {
                         Swal.fire({
@@ -269,6 +296,18 @@ angular
 
         $scope.allChecked = function () {
             return selectedFavorites().length === $scope.favorites.length;
+        }
+
+        $scope.checkOrUncheckAll = function () {
+            if (this.allChecked()) {
+                for (let i = 0; i < $scope.favorites.length; i++) {
+                    $scope.favorites[i].selected = false;
+                }
+            } else
+
+                for (let i = 0; i < $scope.favorites.length; i++) {
+                    $scope.favorites[i].selected = true;
+                }
         }
 
         $scope.deleteMultiple = function() {
@@ -332,7 +371,7 @@ angular
                 .then(
                     function () {
                         $scope.refresh();
-                        $scope.setMode("view");
+                        $scope.setMode("favoritesView");
                     },
                     function (error) {
                         Swal.fire({
@@ -353,7 +392,7 @@ angular
                 .then(
                     function () {
                         $scope.refresh();
-                        $scope.setMode("view");
+                        $scope.setMode("favoritesView");
                     },
                     function (error) {
                         Swal.fire({

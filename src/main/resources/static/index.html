@@ -1,241 +1,261 @@
 <!doctype html>
 <html data-ng-app="favoriteApp" lang="fr">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Minimal Front Sample</title>
-  <link rel="icon" type="image/png" href="medias/images/1820785.png">
+    <meta charset="utf-8">
+    <meta name="favoritesViewport" content="width=device-width, initial-scale=1">
+    <title>Favorite manager</title>
+    <link rel="icon" type="image/png" href="medias/images/1820785.png">
 
-  <link rel="stylesheet" href="libs/bulma/bulma.min.css">
-  <script src="libs/angular/angular.min.js"></script>
-  <script src="libs/sweetalert/sweetalert2.all.min.js"></script>
-  <link href="libs/sweetalert/sweetalert2.min.css" rel="stylesheet">
-  <script src="js/favorite.js"></script>
-  <link rel="stylesheet" href="libs/ngDialog/ngDialog.min.css">
-  <link rel="stylesheet" href="libs/ngDialog/ngDialog-theme-default.min.css">
-  <script src="libs/ngDialog/ngDialog.min.js"></script>
+    <link rel="stylesheet" href="libs/bulma/bulma.min.css">
+    <script src="libs/angular/angular.min.js"></script>
+    <script src="libs/sweetalert/sweetalert2.all.min.js"></script>
+    <link href="libs/sweetalert/sweetalert2.min.css" rel="stylesheet">
+    <script src="js/favorite.js"></script>
+    <link rel="stylesheet" href="libs/ngDialog/ngDialog.min.css">
+    <link rel="stylesheet" href="libs/ngDialog/ngDialog-theme-default.min.css">
+    <script src="libs/ngDialog/ngDialog.min.js"></script>
 </head>
-<body data-ng-controller="FavoritesController">
+<body data-ng-controller="FavoritesController" class="has-background-grey-lighter">
 <section class="section">
-  <div class="container">
+    <div class="container">
 
-    <h1 class="title">Favorite Manager</h1>
+        <section class="hero is-success is-medium">
 
-    <div class="box" data-ng-if="mode == 'view'">
-      <div class="columns">
-        <h2 class="column title">Category menu</h2>
-        <div class="column is-one-quarter is-pulled-right">
-          <button class="button is-primary is-fullwidth" data-ng-click="setMode('creationCategory')">Add</button>
-        </div>
-      </div>
-      <div class="columns">
-        <div class="column">
-          <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
-
-            <thead>
-            <tr>
-              <th class="is-narrow has-text-centered is-vcentered">ID</th>
-              <th class="has-text-centered is-vcentered">Label</th>
-            </tr>
-            </thead>
-
-            <tbody>
-            <tr data-ng-if="categories.length == 0">
-              <td colspan="4" class="has-text-centered is-vcentered">No data !</td>
-            </tr>
-            <tr data-ng-if="c.id !== 0" data-ng-repeat="c in categories | orderBy: sortCriteria">
-              <td class="is-narrow has-text-centered is-vcentered">{{ c.id }}</td>
-              <td class="is-vcentered">
-                {{ c.label }}
-                <div class="is-pulled-right">
-                  <button class="button is-info" data-ng-click="setUpdateCategory(c)">Update</button>
-                  <button class="button is-danger" data-ng-click="deleteCategory(c.id)">Delete</button>
+            <div class="hero-body">
+                <div class="container has-text-centered">
+                    <p class="title">
+                        Favorite Manager
+                    </p>
                 </div>
-              </td>
-            </tr>
-            </tbody>
-
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <div class="box" data-ng-if="mode == 'view'">
-      <h2 class="title">Favorite menu</h2>
-      <div class="columns">
-        <div class="column">
-          <div class="select is-fullwidth">
-
-            <select
-                    data-ng-change="refresh()"
-                    data-ng-model="categoryList.filter"
-                    data-ng-options="item.id as format(item) for item in categories"
-                    required="required">
-            </select>
-
-          </div>
-        </div>
-        <div class="column is-narrow is-one-fifth">
-          <button class="button is-primary is-fullwidth" data-ng-click="setMode('creationFavorite')">Add</button>
-        </div>
-        <div class="column is-narrow is-one-fifth">
-          <button class="button is-danger is-fullwidth" data-ng-click="deleteMultiple()" data-ng-disabled="countChecked() == 0">Delete multiple</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="box" data-ng-if="mode == 'creationFavorite'">
-      <div class="columns">
-        <div class="column">
-          <h2 class="title">Definition of a new Favorite</h2>
-          <form name="form" class="form-validation" novalidate role="form">
-            <div class="field">
-              <label class="label">Label *</label>
-              <div class="control">
-                <input type="text" data-ng-model="favorite.label" class="input" required="required" />
-              </div>
             </div>
-            <div class="field">
-              <label class="label">Link *</label>
-              <div class="control">
-                <input type="text" data-ng-model="favorite.link" class="input" required="required" />
-              </div>
+
+            <div class="hero-foot">
+                <nav class="tabs is-boxed is-fullwidth">
+                    <div class="container">
+                        <ul>
+                            <li class="is-active" id="favoritesTab" data-ng-click="setMode('favoritesView')"><a>Favorites</a></li>
+                            <li class="" id="categoriesTab" data-ng-click="setMode('categoryView')"><a>Categories</a></li>
+                        </ul>
+                    </div>
+                </nav>
             </div>
-            <div class="field">
-              <label class="label">Category *</label>
-              <div class="control">
-                <div class="select is-fullwidth">
-                  <select
-                          data-ng-model="favorite.category"
-                          data-ng-options="item.id as item.label for item in realCategories"
-                          required="required">
-                  </select>
+        </section>
+
+        <div class="box has-background-light" data-ng-if="mode == 'favoritesView'">
+            <div class="columns is-centered">
+                <div class="column columns is-half is-vcentered">
+                    <button class="button is-success is-fullwidth" data-ng-click="setMode('creationFavorite')">Add</button>
+                    <button class="button is-danger is-fullwidth ml-3 mr-3" data-ng-click="deleteMultiple()" data-ng-disabled="countChecked() == 0">Delete</button>
                 </div>
-              </div>
             </div>
-            <button class="button is-primary" type="button" data-ng-disabled="form.$invalid" data-ng-click="createFavorite()">OK</button>
-            <button class="button is-default" type="button" data-ng-click="cancel()">Cancel</button>
-          </form>
         </div>
-      </div>
-    </div>
 
-    <div class="box" data-ng-if="mode == 'updateFavorite'">
-      <div class="columns">
-        <div class="column">
-          <h2 class="title">Update of a Favorite</h2>
-          <form name="form" class="form-validation" novalidate role="form">
-            <div class="field">
-              <label class="label">Label *</label>
-              <div class="control">
-                <input type="text" data-ng-model="favorite.label" class="input" required="required" />
-              </div>
-            </div>
-            <div class="field">
-              <label class="label">Link *</label>
-              <div class="control">
-                <input type="text" data-ng-model="favorite.link" class="input" required="required" />
-              </div>
-            </div>
-            <div class="field">
-              <label class="label">Category *</label>
-              <div class="control">
-                <div class="select is-fullwidth">
-                  <select
-                          data-ng-model="favorite.category"
-                          data-ng-options="item.id as item.label for item in realCategories"
-                          required="required">
-                  </select>
+        <div class="box has-background-light" data-ng-if="mode == 'categoryView'">
+            <div class="columns is-centered">
+                <div class="column columns is-one-quarter">
+                    <button class="button is-success is-fullwidth" data-ng-click="setMode('creationCategory')">Add</button>
                 </div>
-              </div>
             </div>
-            <button class="button is-primary" type="button" data-ng-disabled="form.$invalid" data-ng-click="updateFavorite()">OK</button>
-            <button class="button is-default" type="button" data-ng-click="cancel()">Cancel</button>
-          </form>
         </div>
-      </div>
-    </div>
+        <!--        <div class="column is-narrow is-one-fifth">-->
+        <!--          <button class="button is-primary is-fullwidth" data-ng-click="setMode('creationFavorite')">Add</button>-->
+        <!--        </div>-->
+        <!--        <div class="column is-narrow is-one-fifth">-->
+        <!--          <button class="button is-danger is-fullwidth" data-ng-click="deleteMultiple()" data-ng-disabled="countChecked() == 0">Delete multiple</button>-->
+        <!--        </div>-->
 
-    <div class="box" data-ng-if="mode == 'creationCategory'">
-      <div class="columns">
-        <div class="column">
-          <h2 class="title">Definition of a category</h2>
-          <form name="form" class="form-validation" novalidate role="form">
-            <div class="field">
-              <label class="label">Label *</label>
-              <div class="control">
-                <input type="text" data-ng-model="category.label" class="input" required="required" />
-              </div>
-            </div>
-            <button class="button is-primary" type="button" data-ng-disabled="form.$invalid" data-ng-click="createCategory()">OK</button>
-            <button class="button is-default" type="button" data-ng-click="cancel()">Cancel</button>
-          </form>
-        </div>
-      </div>
-    </div>
 
-    <div class="box" data-ng-if="mode == 'updateCategory'">
-      <div class="columns">
-        <div class="column">
-          <h2 class="title">Update of a Category</h2>
-          <form name="form" class="form-validation" novalidate role="form">
-            <div class="field">
-              <label class="label">Label *</label>
-              <div class="control">
-                <input type="text" data-ng-model="category.label" class="input" required="required" />
-              </div>
-            </div>
-            <button class="button is-primary" type="button" data-ng-disabled="form.$invalid" data-ng-click="updateCategory()">OK</button>
-            <button class="button is-default" type="button" data-ng-click="cancel()">Cancel</button>
-          </form>
-        </div>
-      </div>
-    </div>
 
-    <div class="box">
-      <div class="columns">
-        <div class="column">
-          <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
-
-            <thead>
-            <tr>
-              <th class="is-narrow"><input ng-checked="allChecked()" type="checkbox"></th>
-              <th class="is-narrow has-text-centered is-vcentered">ID</th>
-              <th class=" has-text-centered is-vcentered">Label</th>
-              <th class="has-text-centered is-vcentered">Link</th>
-              <th class="is-narrow has-text-centered is-vcentered" data-ng-click="sortByCategory()">Category</th>
-              <th class="is-narrow has-text-centered is-vcentered" data-ng-click="sortByDate()">Last Update</th>
-            </tr>
-            </thead>
-
-            <tbody>
-            <tr data-ng-if="favorites.length == 0">
-              <td colspan="7">No data !</td>
-            </tr>
-            <tr data-ng-repeat="f in favorites | orderBy: sortCriteria">
-              <td> <input class="has-text-centered is-vcentered" type="checkbox" data-ng-model="f.selected"></td>
-              <td class="has-text-centered is-vcentered">{{ f.id }}</td>
-              <td class="is-narrow has-text-centered is-vcentered" data-ng-class="{ 'is-success': f.validity, 'is-danger': !f.validity }">{{ f.label }}</td>
-              <td>
-                <a data-ng-href="{{ f.link }}" target="_blank">{{ f.link }}</a>
-                <div class="is-pulled-right">
-                  <button class="button is-info mr-1" data-ng-click="setUpdateFavorite(f)">Update</button>
-                  <button class="button is-danger" data-ng-click="deleteFavorite(f.id)">Delete</button>
+        <div class="box has-background-light" data-ng-if="mode == 'creationFavorite'">
+            <div class="columns">
+                <div class="column">
+                    <h2 class="title">Definition of a new Favorite</h2>
+                    <form name="form" class="form-validation" novalidate role="form">
+                        <div class="field">
+                            <label class="label">Label *</label>
+                            <div class="control">
+                                <input type="text" data-ng-model="favorite.label" class="input" required="required" />
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Link *</label>
+                            <div class="control">
+                                <input type="text" data-ng-model="favorite.link" class="input" required="required" />
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Category *</label>
+                            <div class="control">
+                                <div class="select is-fullwidth">
+                                    <select
+                                            data-ng-model="favorite.category"
+                                            data-ng-options="item.id as item.label for item in realCategories"
+                                            required="required">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="button is-primary" type="button" data-ng-disabled="form.$invalid" data-ng-click="createFavorite()">OK</button>
+                        <button class="button is-default" type="button" data-ng-click="cancel()">Cancel</button>
+                    </form>
                 </div>
-              </td>
-              <td class="has-text-centered is-vcentered"><span class="tag is-success">{{ f.category.label }}</span></td>
-              <td class="has-text-centered is-vcentered">{{ f.date | date: 'yyyy-MM-dd' }}</td>
-            </tr>
-            </tbody>
-
-          </table>
+            </div>
         </div>
-      </div>
+
+        <div class="box has-background-light" data-ng-if="mode == 'updateFavorite'">
+            <div class="columns">
+                <div class="column">
+                    <h2 class="title">Update of a Favorite</h2>
+                    <form name="form" class="form-validation" novalidate role="form">
+                        <div class="field">
+                            <label class="label">Label *</label>
+                            <div class="control">
+                                <input type="text" data-ng-model="favorite.label" class="input" required="required" />
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Link *</label>
+                            <div class="control">
+                                <input type="text" data-ng-model="favorite.link" class="input" required="required" />
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Category *</label>
+                            <div class="control">
+                                <div class="select is-fullwidth">
+                                    <select
+                                            data-ng-model="favorite.category"
+                                            data-ng-options="item.id as item.label for item in realCategories"
+                                            required="required">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="button is-primary" type="button" data-ng-disabled="form.$invalid" data-ng-click="updateFavorite()">OK</button>
+                        <button class="button is-default" type="button" data-ng-click="cancelCategory()">Cancel</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="box has-background-light" data-ng-if="mode == 'creationCategory'">
+            <div class="columns">
+                <div class="column">
+                    <h2 class="title">Definition of a category</h2>
+                    <form name="form" class="form-validation" novalidate role="form">
+                        <div class="field">
+                            <label class="label">Label *</label>
+                            <div class="control">
+                                <input type="text" data-ng-model="category.label" class="input" required="required" />
+                            </div>
+                        </div>
+                        <button class="button is-primary" type="button" data-ng-disabled="form.$invalid" data-ng-click="createCategory()">OK</button>
+                        <button class="button is-default" type="button" data-ng-click="cancelCategory()">Cancel</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="box has-background-light" data-ng-if="mode == 'updateCategory'">
+            <div class="columns">
+                <div class="column">
+                    <h2 class="title">Update of a Category</h2>
+                    <form name="form" class="form-validation" novalidate role="form">
+                        <div class="field">
+                            <label class="label">Label *</label>
+                            <div class="control">
+                                <input type="text" data-ng-model="category.label" class="input" required="required" />
+                            </div>
+                        </div>
+                        <button class="button is-primary" type="button" data-ng-disabled="form.$invalid" data-ng-click="updateCategory()">OK</button>
+                        <button class="button is-default" type="button" data-ng-click="cancelCategory()">Cancel</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="box has-background-light" data-ng-if="(mode == 'categoryView') || (mode == 'creationCategory') || (mode == 'updateCategory')">
+            <div class="columns">
+                <div class="column">
+                    <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
+
+                        <thead class="has-background-grey-light">
+                        <tr>
+                            <th class="is-narrow has-text-centered is-vcentered">ID</th>
+                            <th class="has-text-centered is-vcentered">Label</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr data-ng-if="categories.length == 0">
+                            <td colspan="4" class="has-text-centered is-vcentered">No data !</td>
+                        </tr>
+                        <tr data-ng-if="c.id !== 0" data-ng-repeat="c in categories | orderBy: sortCriteria">
+                            <td class="is-narrow has-text-centered is-vcentered">{{ c.id }}</td>
+                            <td class="is-vcentered">
+                                {{ c.label }}
+                                <div class="is-pulled-right">
+                                    <button class="button is-info" data-ng-click="setUpdateCategory(c)">Update</button>
+                                    <button class="button is-danger" data-ng-click="deleteCategory(c.id)">Delete</button>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="box has-background-light"  data-ng-if="(mode == 'favoritesView') || (mode == 'creationFavorite') || (mode == 'updateFavorite')">
+
+            <div class="select is-fullwidth mb-4">
+                <select
+                        class="has-background-info-light"
+                        data-ng-style="{'border': '1px solid hsl(204, 86%, 53%)'}"
+                        data-ng-change="refresh()"
+                        data-ng-model="categoryList.filter"
+                        data-ng-options="item.id as format(item) for item in categories"
+                        required="required">
+                </select>
+            </div>
+
+            <table class="table is-bordered is-striped is-hoverable is-fullwidth has-background-light">
+                <thead class="has-background-grey-light">
+                <tr>
+                    <th class="is-narrow"><input data-ng-click="checkOrUncheckAll()" ng-checked="allChecked()" type="checkbox"></th>
+                    <th class="is-narrow has-text-centered is-vcentered">ID</th>
+                    <th class=" has-text-centered is-vcentered">Label</th>
+                    <th class="has-text-centered is-vcentered">Link</th>
+                    <th class="is-narrow has-text-centered is-vcentered" data-ng-click="sortByCategory()">Category</th>
+                    <th class="is-narrow has-text-centered is-vcentered" data-ng-click="sortByDate()">Last Update</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr data-ng-if="favorites.length == 0">
+                    <td colspan="6">No data !</td>
+                </tr>
+                <tr data-ng-repeat="f in favorites | orderBy: sortCriteria">
+                    <td> <input class="has-text-centered is-vcentered" type="checkbox" data-ng-model="f.selected"></td>
+                    <td class="has-text-centered is-vcentered">{{ f.id }}</td>
+                    <td class="is-narrow has-text-centered is-vcentered" data-ng-class="{ 'is-success': f.validity, 'is-danger': !f.validity }">{{ f.label }}</td>
+                    <td>
+                        <a data-ng-href="{{ f.link }}" target="_blank">{{ f.link }}</a>
+                        <div class="is-pulled-right">
+                            <button class="button is-info mr-1" data-ng-click="setUpdateFavorite(f)">Update</button>
+                        </div>
+                    </td>
+                    <td class="has-text-centered is-vcentered"><span class="tag is-success">{{ f.category.label }}</span></td>
+                    <td class="has-text-centered is-vcentered">{{ f.date | date: 'yyyy-MM-dd' }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
     </div>
 
 
-  </div>
-  </div>
 </section>
 </body>
 </html>

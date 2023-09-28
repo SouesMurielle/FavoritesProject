@@ -215,7 +215,7 @@
             <tr data-ng-repeat="f in favorites | orderBy: sortCriteria">
               <td> <input class="has-text-centered is-vcentered" type="checkbox" data-ng-model="f.selected"></td>
               <td class="has-text-centered is-vcentered">{{ f.id }}</td>
-              <td class="is-narrow has-text-centered is-vcentered">{{ f.label }}</td>
+              <td class="is-narrow has-text-centered is-vcentered" data-ng-class="{ 'is-success': f.validity, 'is-danger': !f.validity }">{{ f.label }}</td>
               <td>
                 <a data-ng-href="{{ f.link }}" target="_blank">{{ f.link }}</a>
                 <div class="is-pulled-right">

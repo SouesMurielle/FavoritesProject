@@ -167,11 +167,11 @@ angular
                     if ( ! url.startsWith ("http://") && ! url.startsWith ("https://"))
                         url = "https://" + url ;  // Si ce n'est pas le cas, ajoutez "https://"
                         // Regex pour valider une URL
-                        var urlPattern = /^(?!.*\.\.)[A-Za-z0-9-.:/]+$/i;
+                        //var urlPattern = /^(?!.*\.\.)[A-Za-z0-9-.:/]+$/i;
+                        var urlPattern = /^(?!.*\.\.)[A-Za-z0-9-:/]+\.([A-Za-z]{2,}|localhost)(\/[^\s]*)*$/i;
                         // Test de l'URL / regex
 
                         if (!urlPattern.test(url)){
-                        //console.log(url);
                         Swal.fire({icon: 'error',
                         title: 'Invalid URL',
                         text: 'Please enter a valid URL',
@@ -188,13 +188,17 @@ angular
                     function () {
                         $scope.refresh();
                         $scope.setMode("view");
+                        Swal.fire(
+                             '',
+                             'Your favorite has been created.',
+                             'success'
+                        )
                     },
                     function (error) {
                         Swal.fire({
                             icon : 'error',
                             title : 'Not created!',
-                            text : 'Your category hasn\'t been created.',
-                            footer : error.data.message
+                            text : 'Your favorite hasn\'t been created.',
                         });
                     }
                 );

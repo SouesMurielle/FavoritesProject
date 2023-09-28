@@ -163,46 +163,47 @@ angular
 
         $scope.createFavorite = function () {
         var url = $scope.favorite.link;
-                    // Vérifiez si l'URL commence par "http://" ou "https://"
+                    // Vérifie si l'URL commence par "http://" ou "https://"
                     if ( ! url.startsWith ("http://") && ! url.startsWith ("https://"))
-                        url = "https://" + url ;  // Si ce n'est pas le cas, ajoutez "https://"
+                        // Si ce n'est pas le cas, ajoute "https://"
+                        url = "https://" + url ;
                         // Regex pour valider une URL
                         //var urlPattern = /^(?!.*\.\.)[A-Za-z0-9-.:/]+$/i;
                         var urlPattern = /^(?!.*\.\.)[A-Za-z0-9-:/]+\.([A-Za-z]{2,}|localhost)(\/[^\s]*)*$/i;
                         // Test de l'URL / regex
 
-                        if (!urlPattern.test(url)){
-                        Swal.fire({icon: 'error',
-                        title: 'Invalid URL',
-                        text: 'Please enter a valid URL',
-                        })
-                        }
-                        else {
-            $http
-                .post("api/" + $scope.favorite.category + "/favorite", {
-                    id: null,
-                    label: $scope.favorite.label,
-                    link: $scope.favorite.link,
+            if (!urlPattern.test(url)){
+                Swal.fire({icon: 'error',
+                    title: 'Invalid URL',
+                    text: 'Please enter a valid URL',
                 })
-                .then(
-                    function () {
-                        $scope.refresh();
-                        $scope.setMode("view");
-                        Swal.fire(
-                             '',
-                             'Your favorite has been created.',
-                             'success'
-                        )
-                    },
-                    function (error) {
-                        Swal.fire({
-                            icon : 'error',
-                            title : 'Not created!',
-                            text : 'Your favorite hasn\'t been created.',
-                        });
-                    }
-                );
-        }};
+            }
+            else {
+                $http
+                    .post("api/" + $scope.favorite.category + "/favorite", {
+                        id: null,
+                        label: $scope.favorite.label,
+                        link: $scope.favorite.link,
+                    })
+                    .then(
+                        function () {
+                            $scope.refresh();
+                            $scope.setMode("view");
+                            Swal.fire(
+                                'success',
+                                'Your favorite has been created.',
+                                'success'
+                            )
+                        },
+                        function (error) {
+                            Swal.fire({
+                                icon : 'error',
+                                title : 'Not created!',
+                                text : 'Your favorite hasn\'t been created.'
+                            });
+                        }
+                    );
+            }};
 
         $scope.updateFavorite = function() {
             $http
@@ -220,8 +221,7 @@ angular
                         Swal.fire({
                             icon : 'error',
                             title : 'Not updated!',
-                            text : 'Your category hasn\'t been updated.',
-                            footer : error.data.message
+                            text : 'Your favorite hasn\'t been updated.'
                         });
                     }
                 );
@@ -251,8 +251,7 @@ angular
                             Swal.fire({
                                 icon : 'error',
                                 title : 'Not deleted!',
-                                text : 'Your category hasn\'t been deleted.',
-                                footer : error.data.message
+                                text : 'Your favorite hasn\'t been deleted.'
                             });
                         }
                     )
@@ -266,6 +265,10 @@ angular
 
         $scope.countChecked = function () {
             return selectedFavorites().length;
+        }
+
+        $scope.allChecked = function () {
+            return selectedFavorites().length === $scope.favorites.length;
         }
 
         $scope.deleteMultiple = function() {
@@ -299,8 +302,7 @@ angular
                                     Swal.fire({
                                         icon : 'error',
                                         title : 'Not deleted!',
-                                        text : 'Your category hasn\'t been deleted.',
-                                        footer : error.data.message
+                                        text : 'Yours favorites hasn\'t been deleted.'
                                     });
                                 }
                             );
@@ -336,8 +338,7 @@ angular
                         Swal.fire({
                             icon : 'error',
                             title : 'Not created!',
-                            text : 'Your category hasn\'t been created.',
-                            footer : error.data.message
+                            text : 'Your category hasn\'t been created.'
                         });
                     }
                 );
@@ -358,8 +359,7 @@ angular
                         Swal.fire({
                             icon : 'error',
                             title : 'Not updated!',
-                            text : 'Your category hasn\'t been updated.',
-                            footer : error.data.message
+                            text : 'Your category hasn\'t been updated.'
                         });
                     }
                 );
@@ -388,8 +388,7 @@ angular
                             Swal.fire({
                                 icon : 'error',
                                 title : 'Not deleted!',
-                                text : 'Your category hasn\'t been deleted.',
-                                footer : error.data.message
+                                text : 'Your category hasn\'t been deleted.'
                             });
                         }
                     );

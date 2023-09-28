@@ -57,47 +57,14 @@
                 </div>
             </div>
         </div>
+        <!--        <div class="column is-narrow is-one-fifth">-->
+        <!--          <button class="button is-primary is-fullwidth" data-ng-click="setMode('creationFavorite')">Add</button>-->
+        <!--        </div>-->
+        <!--        <div class="column is-narrow is-one-fifth">-->
+        <!--          <button class="button is-danger is-fullwidth" data-ng-click="deleteMultiple()" data-ng-disabled="countChecked() == 0">Delete multiple</button>-->
+        <!--        </div>-->
 
-        <div class="box has-background-light" data-ng-if="(mode == 'categoryView') || (mode == 'creationCategory') || (mode == 'updateCategory')">
-            <div class="columns">
-                <div class="column">
-                    <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
 
-                        <thead class="has-background-grey-light">
-                        <tr>
-                            <th class="is-narrow has-text-centered is-vcentered">ID</th>
-                            <th class="has-text-centered is-vcentered">Label</th>
-                        </tr>
-                        </thead>
-
-                        <tbody>
-                        <tr data-ng-if="categories.length == 0">
-                            <td colspan="4" class="has-text-centered is-vcentered">No data !</td>
-                        </tr>
-                        <tr data-ng-if="c.id !== 0" data-ng-repeat="c in categories | orderBy: sortCriteria">
-                            <td class="is-narrow has-text-centered is-vcentered">{{ c.id }}</td>
-                            <td class="is-vcentered">
-                                {{ c.label }}
-                                <div class="is-pulled-right">
-                                    <button class="button is-info" data-ng-click="setUpdateCategory(c)">Update</button>
-                                    <button class="button is-danger" data-ng-click="deleteCategory(c.id)">Delete</button>
-                                </div>
-                            </td>
-                        </tr>
-                        </tbody>
-
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div class="column is-narrow is-one-fifth">
-          <button class="button is-primary is-fullwidth" data-ng-click="setMode('creationFavorite')">Add</button>
-        </div>
-        <div class="column is-narrow is-one-fifth">
-          <button class="button is-danger is-fullwidth" data-ng-click="deleteMultiple()" data-ng-disabled="countChecked() == 0">Delete multiple</button>
-        </div>
-      </div>
-    </div>
 
         <div class="box has-background-light" data-ng-if="mode == 'creationFavorite'">
             <div class="columns">
@@ -165,7 +132,7 @@
                             </div>
                         </div>
                         <button class="button is-primary" type="button" data-ng-disabled="form.$invalid" data-ng-click="updateFavorite()">OK</button>
-                        <button class="button is-default" type="button" data-ng-click="cancel()">Cancel</button>
+                        <button class="button is-default" type="button" data-ng-click="cancelCategory()">Cancel</button>
                     </form>
                 </div>
             </div>
@@ -203,6 +170,39 @@
                         <button class="button is-primary" type="button" data-ng-disabled="form.$invalid" data-ng-click="updateCategory()">OK</button>
                         <button class="button is-default" type="button" data-ng-click="cancelCategory()">Cancel</button>
                     </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="box has-background-light" data-ng-if="(mode == 'categoryView') || (mode == 'creationCategory') || (mode == 'updateCategory')">
+            <div class="columns">
+                <div class="column">
+                    <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
+
+                        <thead class="has-background-grey-light">
+                        <tr>
+                            <th class="is-narrow has-text-centered is-vcentered">ID</th>
+                            <th class="has-text-centered is-vcentered">Label</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr data-ng-if="categories.length == 0">
+                            <td colspan="4" class="has-text-centered is-vcentered">No data !</td>
+                        </tr>
+                        <tr data-ng-if="c.id !== 0" data-ng-repeat="c in categories | orderBy: sortCriteria">
+                            <td class="is-narrow has-text-centered is-vcentered">{{ c.id }}</td>
+                            <td class="is-vcentered">
+                                {{ c.label }}
+                                <div class="is-pulled-right">
+                                    <button class="button is-info" data-ng-click="setUpdateCategory(c)">Update</button>
+                                    <button class="button is-danger" data-ng-click="deleteCategory(c.id)">Delete</button>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+
+                    </table>
                 </div>
             </div>
         </div>
@@ -256,8 +256,6 @@
     </div>
 
 
-  </div>
-  </div>
 </section>
 </body>
 </html>

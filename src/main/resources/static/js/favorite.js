@@ -50,7 +50,7 @@ angular
         };
 
         $scope.cancelCategory = function () {
-            $scope.setMode("menuCategory");
+            $scope.setMode("categoryView");
         };
 
         $scope.refresh = function () {

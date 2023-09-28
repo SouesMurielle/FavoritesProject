@@ -57,27 +57,45 @@ public class FavoritesProjectApplication {
 		}
 
 		private static void getDatabaseBackup() {
+			try {
+
+				// Définissez les variables de l'utilisateur et de la base a dumper.
+				String MYSQL_USER = "favuser" ;      // "favuser";
+				String MYSQL_PASSWORD = "favuser" ;  // "favuser";
+				String MYSQL_DATABASE = "favorites" ;
+				String BACKUP_FILENAME = "backup.sql";
+				String BACKUP_PATH = "src/main/resources/";
+				// Créez la liste des arguments de la commande
+
+				List <String> command = new ArrayList <> () ;
+
+				command.add ("mysqldump") ;
+				command.add ("-u " + MYSQL_USER) ;
+				command.add ("-p" + MYSQL_PASSWORD) ;
+				command.add (MYSQL_DATABASE) ;
+				command.add ("> " + BACKUP_PATH+BACKUP_FILENAME) ;
+				// Créez un processus pour exécuter la commande.
+				ProcessBuilder processBuilder = new ProcessBuilder (command) ;
+				// Redirige la sortie de la commande vers un fichier
+				processBuilder.redirectOutput (ProcessBuilder.Redirect.to (new File(BACKUP_PATH+BACKUP_FILENAME))) ;
+				processBuilder.redirectErrorStream (true) ; // Redirige la sortie d'erreur vers la sortie standard
+				Process process = processBuilder.start () ; // Démarrez le processus
+				int exitCode = process.waitFor () ;         // Attendez que le processus se termine
+				if (exitCode == 0) System.out.println ("Sauvegarde réussie.") ;
+				else System.out.println ("Error : " + exitCode) ;
+			} catch (IOException | InterruptedException ignored) {
+				// Les exceptions sont ignorées.
+				System.out.println ("Error AU CAS OU") ;
+				System.out.println(ignored.getMessage());
+
+			}
 		}
 
 		private void CheckValidityURL() {
 			for (FavoriteItem favoriteItem: favoriteService.findAll()) {
-				String lien = favoriteItem.getLink() ;
-				Long Id = favoriteItem.getCategory().getId() ;
-
-				FavoriteDefinition definition = new FavoriteDefinition(favoriteItem.getId(),favoriteItem.getLabel(),lien);
-				try {
-					URL url = new URL (lien) ;
-					HttpURLConnection connection = (HttpURLConnection) url.openConnection ();
-					connection.setRequestMethod ("GET") ;
-					// C'est ce if qui se charge de tester reponse du lien.
-					if (connection.getResponseCode () == HttpURLConnection.HTTP_OK) {
-						favoriteService.save(definition,Id,true);
-						System.out.println (lien + " " + Id + " --> Status == TRUE");
-					}
-				} catch (IOException e) {
-					favoriteService.save(definition,Id,false);
-					System.out.println (lien + " " + Id + " --> Status == FALSE");
-				}
+				Long Id = favoriteItem.getCategory().getId();
+				FavoriteDefinition definition = new FavoriteDefinition(favoriteItem.getId(),favoriteItem.getLabel(),favoriteItem.getLink());
+				favoriteService.save(definition,Id);
 			}
 		}
 	}

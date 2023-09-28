@@ -19,7 +19,7 @@ public interface IFavoriteService {
 
     List<FavoriteItem> findAllByOrderByCategoryLabel(SortBy sortBy);
 
-    FavoriteItem save(FavoriteDefinition favorite, Long categoryId, boolean isValid);
+    FavoriteItem save(FavoriteDefinition favorite, Long categoryId);
 
     void delete(long id);
 

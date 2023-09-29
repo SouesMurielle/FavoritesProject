@@ -30,11 +30,8 @@ public class CategoryService implements ICategoryService {
                 .stream()
                 .sorted(Comparator.comparing(Category::getLabel))
                 .map(helper::toCategoryToListItem)
-//                .map(category -> helper.toCategoryToListItem(category))
                 .toList();
     }
-
-
 
     @Override
     public void delete(long id) {
@@ -61,6 +58,3 @@ public class CategoryService implements ICategoryService {
         return helper.toCategoryToListItem(category);
     }
 }
-// @Transactional indique que toutes les methodes que le service contient deviennent transactionnelles.
-// cad historiser toutes les opérations/instructions faites depuis le début de la transaction
-// et être capable de faire marche arrière

@@ -15,12 +15,11 @@
     <link rel="stylesheet" href="libs/ngDialog/ngDialog-theme-default.min.css">
     <script src="libs/ngDialog/ngDialog.min.js"></script>
 </head>
-<body data-ng-controller="FavoritesController" class="has-background-grey-lighter">
+<body data-ng-controller="FavoritesController" class="has-background-grey-lighter" data-ng-style="{'height':'100%'}">
 <section class="section">
     <div class="container">
 
-        <section class="hero is-success is-medium">
-
+        <section class="hero is-success is-small">
             <div class="hero-body">
                 <div class="container has-text-centered">
                     <p class="title">
@@ -28,18 +27,22 @@
                     </p>
                 </div>
             </div>
-
-            <div class="hero-foot">
-                <nav class="tabs is-boxed is-fullwidth">
-                    <div class="container">
-                        <ul>
-                            <li class="is-active" id="favoritesTab" data-ng-click="setMode('favoritesView')"><a>Favorites</a></li>
-                            <li class="" id="categoriesTab" data-ng-click="setMode('categoryView')"><a>Categories</a></li>
-                        </ul>
-                    </div>
-                </nav>
-            </div>
         </section>
+
+        <div class="mt-6 is-fullwidth">
+            <nav class="tabs is-boxed is-fullwidth" data-ng-style="{'background-color': 'hsl(171, 100%, 29%)', 'border-radius':'4px'}">
+                <div class="container">
+                    <ul>
+                        <li class="is-active" id="favoritesTab" data-ng-click="setMode('favoritesView')">
+                            <a data-ng-style="isActive()">FAVORITES</a>
+                        </li>
+                        <li class="" id="categoriesTab" data-ng-click="setMode('categoryView')">
+                            <a data-ng-style="isActive()">CATEGORIES</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
 
         <div class="box has-background-light" data-ng-if="mode == 'favoritesView'">
             <div class="columns is-centered">
@@ -57,14 +60,6 @@
                 </div>
             </div>
         </div>
-        <!--        <div class="column is-narrow is-one-fifth">-->
-        <!--          <button class="button is-primary is-fullwidth" data-ng-click="setMode('creationFavorite')">Add</button>-->
-        <!--        </div>-->
-        <!--        <div class="column is-narrow is-one-fifth">-->
-        <!--          <button class="button is-danger is-fullwidth" data-ng-click="deleteMultiple()" data-ng-disabled="countChecked() == 0">Delete multiple</button>-->
-        <!--        </div>-->
-
-
 
         <div class="box has-background-light" data-ng-if="mode == 'creationFavorite'">
             <div class="columns">
@@ -132,7 +127,7 @@
                             </div>
                         </div>
                         <button class="button is-primary" type="button" data-ng-disabled="form.$invalid" data-ng-click="updateFavorite()">OK</button>
-                        <button class="button is-default" type="button" data-ng-click="cancelCategory()">Cancel</button>
+                        <button class="button is-default" type="button" data-ng-click="cancel()">Cancel</button>
                     </form>
                 </div>
             </div>
@@ -181,8 +176,10 @@
 
                         <thead class="has-background-grey-light">
                         <tr>
-                            <th class="is-narrow has-text-centered is-vcentered">ID</th>
+                            <th class="has-text-centered is-vcentered">ID</th>
                             <th class="has-text-centered is-vcentered">Label</th>
+                            <th class="has-text-centered is-vcentered">Update</th>
+                            <th class="has-text-centered is-vcentered">Delete</th>
                         </tr>
                         </thead>
 
@@ -191,14 +188,19 @@
                             <td colspan="4" class="has-text-centered is-vcentered">No data !</td>
                         </tr>
                         <tr data-ng-if="c.id !== 0" data-ng-repeat="c in categories | orderBy: sortCriteria">
-                            <td class="is-narrow has-text-centered is-vcentered">{{ c.id }}</td>
-                            <td class="is-vcentered">
-                                {{ c.label }}
-                                <div class="is-pulled-right">
-                                    <button class="button is-info" data-ng-click="setUpdateCategory(c)">Update</button>
-                                    <button class="button is-danger" data-ng-click="deleteCategory(c.id)">Delete</button>
-                                </div>
+                            <td class="has-text-centered is-vcentered">
+                                {{ c.id }}
                             </td>
+                            <td class="is-vcentered has-text-centered">
+                                {{ c.label }}
+                            </td>
+                            <td class="is-narrow has-text-centered">
+                                <button class="button is-info" data-ng-click="setUpdateCategory(c)">Update</button>
+                            </td>
+                            <td class="is-narrow has-text-centered">
+                                <button class="button is-danger" data-ng-click="deleteCategory(c.id)">Delete</button>
+                            </td>
+
                         </tr>
                         </tbody>
 
@@ -224,31 +226,32 @@
                 <thead class="has-background-grey-light">
                 <tr>
                     <th class="is-narrow"><input data-ng-click="checkOrUncheckAll()" ng-checked="allChecked()" type="checkbox"></th>
-                    <th class="is-narrow has-text-centered is-vcentered">ID</th>
+                    <th class="has-text-centered is-vcentered is-narrow">ID</th>
                     <th class=" has-text-centered is-vcentered">Label</th>
                     <th class="has-text-centered is-vcentered">Link</th>
-                    <th class="is-narrow has-text-centered is-vcentered" data-ng-click="sortByCategory()">Category</th>
-                    <th class="is-narrow has-text-centered is-vcentered" data-ng-click="sortByDate()">Last Update</th>
+                    <th class="has-text-centered is-vcentered" data-ng-click="sortByCategory()">Category</th>
+                    <th class="has-text-centered is-vcentered is-narrow" data-ng-click="sortByDate()">Last Update</th>
+                    <th class="has-text-centered">Update</th>
                 </tr>
                 </thead>
 
                 <tbody>
                 <tr data-ng-if="favorites.length == 0">
-                    <td colspan="6">No data !</td>
+                    <td colspan="7">No data !</td>
                 </tr>
                 <tr data-ng-repeat="f in favorites | orderBy: sortCriteria">
                     <td> <input class="has-text-centered is-vcentered" type="checkbox" data-ng-model="f.selected"></td>
                     <td class="has-text-centered is-vcentered">{{ f.id }}</td>
-                    <td class="is-narrow has-text-centered is-vcentered" data-ng-class="{'has-text-success' : f.validity, 'is-underlined has-text-danger' : !f.validity }" >{{ f.label }}</td>
-<!--                    <td class="is-narrow has-text-centered is-vcentered" data-ng-class="{ 'is-success': f.validity, 'is-danger': !f.validity }">{{ f.label }}</td>-->
+                    <td class="has-text-centered is-vcentered" data-ng-class="{'has-text-success' : f.validity, 'is-underlined has-text-danger' : !f.validity }" >{{ f.label }}</td>
                     <td>
-                        <a data-ng-href="{{ f.link }}" target="_blank">{{ f.link }}</a>
-                        <div class="is-pulled-right">
-                            <button class="button is-info mr-1" data-ng-click="setUpdateFavorite(f)">Update</button>
-                        </div>
+                        <a data-ng-style="{'word-break': 'break-all'}" data-ng-href="{{ f.link }}" target="_blank">{{ f.link }}</a>
                     </td>
-                    <td class="has-text-centered is-vcentered"><span class="tag is-success">{{ f.category.label }}</span></td>
+                    <td class="has-text-centered is-vcentered is-narrow"><span class="tag is-success">{{ f.category.label }}</span></td>
                     <td class="has-text-centered is-vcentered">{{ f.date | date: 'yyyy-MM-dd' }}</td>
+                    <td class="is-vcentered is-narrow">
+                        <button class="button is-info mr-1" data-ng-click="setUpdateFavorite(f)">Update</button>
+                    </td>
+
                 </tr>
                 </tbody>
             </table>

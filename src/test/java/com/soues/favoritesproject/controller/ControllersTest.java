@@ -124,6 +124,7 @@ public class ControllersTest {
                         .content(objectMapper.writeValueAsString(new FavoriteDefinition(null,null,favoriteLink))))
                 .andExpect(status().is2xxSuccessful())
                 .andReturn();
+
         return objectMapper.readValue(mvcResult.getResponse().getContentAsString(), FavoriteItem.class);
     }
 

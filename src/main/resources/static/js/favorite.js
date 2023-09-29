@@ -137,33 +137,46 @@ angular
                     label: "",
                     category: $scope.realCategories[idx].id
                 };
-            } else if (text === "favoritesView") {
+            } else if ((text === "favoritesView") || (text === "updateFavorite")) {
                 toggleActiveTab(1);
-            } else if (text === "updateFavorite") {
-                toggleActiveTab(1);
-            } else if (text === "creationCategory") {
-                toggleActiveTab(2);
-            } else if (text === "categoryView") {
-                toggleActiveTab(2);
-            } else if (text === "updateCategory") {
+            } else if ((text === "creationCategory") || (text === "categoryView") || (text === "updateCategory")) {
                 toggleActiveTab(2);
             }
 
             $scope.mode = text;
         };
 
+        $scope.isActive = function () {
+            const favoritesTab = document.getElementById("favoritesTab");
+            const favoritesA = favoritesTab.children[0];
+            const categoriesTab = document.getElementById("categoriesTab");
+            const categoriesA = categoriesTab.children[0];
+
+            if (categoriesTab.classList.contains("is-active")) {
+                categoriesA.style.fontWeight = "bold";
+                categoriesA.style.color = "black";
+                favoritesA.style.color = "white";
+                favoritesA.style.fontWeight = "normal";
+            } else {
+                favoritesA.style.color = "black";
+                favoritesA.style.fontWeight = "bold";
+                categoriesA.style.color = "white";
+                categoriesA.style.fontWeight = "normal";
+            }
+        }
+
         function toggleActiveTab(id) {
-            var favoritesTab = document.getElementById("favoritesTab");
-            var categoriesTab = document.getElementById("categoriesTab");
+            const favoritesTab = document.getElementById("favoritesTab");
+            const categoriesTab = document.getElementById("categoriesTab");
             if (id === 1) {
                 favoritesTab.classList.add("is-active");
-                if (categoriesTab.classList.contains("is-active"))
-                    categoriesTab.classList.remove("is-active");
+                categoriesTab.classList.remove("is-active");
+                $scope.isActive();
             }
             if (id === 2) {
                 categoriesTab.classList.add("is-active");
-                if (favoritesTab.classList.contains("is-active"))
-                    favoritesTab.classList.remove("is-active");
+                favoritesTab.classList.remove("is-active");
+                $scope.isActive();
             }
         }
 
@@ -195,8 +208,7 @@ angular
                 // Si ce n'est pas le cas, ajoute "https://"
                 url = "https://" + url ;
             // Regex pour valider une URL
-            var urlPattern = /^([a-zA-Z0-9]+[\.-:]+?[\/]*)([a-zA-Z0-9]+[\.\/-]?)*([a-zA-Z0-9]+[\/-]?)$/;
-            // var urlPattern = /^(?!.*\.\.)[A-Za-z0-9-:/]+\.([A-Za-z]{2,}|localhost)(\/[^\s]*)*$/i;
+            var urlPattern = /^([a-zA-Z0-9]+[\.-:]+?[\/]*)([a-zA-Z0-9]+[\.\/\-\?=\+&%_]?)*([a-zA-Z0-9]+[\/\-\?=\+&%_]?)$/;
             // Test de l'URL / regex
 
             if (!urlPattern.test(url)){
@@ -437,7 +449,6 @@ angular
 
         $scope.format = function(item) {
             return (item.label + (item.id !== -1 ? ' (' + item.references + ')' : ''));
-//            return (item.label + (item.id != 0 ? ' (' + item.references + ')' : ''));
         }
 
         $scope.refresh();

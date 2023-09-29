@@ -23,10 +23,10 @@ public class Favorite {
     @Column(name = "label", length=100)
     private String label;
 
-    @Column(name = "link")
+    @Column(name = "link", length=65535)
     private String link;
 
-    @Column(name = "Update_at", columnDefinition = "date")
+    @Column(name = "update_at", columnDefinition = "date")
     private Date date;
 
     @ManyToOne(optional = false, fetch = FetchType.EAGER)

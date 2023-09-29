@@ -59,13 +59,13 @@ public class FavoritesProjectApplication {
 		private static void getDatabaseBackup() {
 			try {
 
-				// Définissez les variables de l'utilisateur et de la base a dumper.
+				// Définit les variables de l'utilisateur et de la base a dumper.
 				String MYSQL_USER = "favuser" ;      // "favuser";
 				String MYSQL_PASSWORD = "favuser" ;  // "favuser";
 				String MYSQL_DATABASE = "favorites" ;
 				String BACKUP_FILENAME = "backup.sql";
 				String BACKUP_PATH = "src/main/resources/";
-				// Créez la liste des arguments de la commande
+				// Crée la liste des arguments de la commande
 
 				List <String> command = new ArrayList <> () ;
 
@@ -74,20 +74,19 @@ public class FavoritesProjectApplication {
 				command.add ("-p" + MYSQL_PASSWORD) ;
 				command.add (MYSQL_DATABASE) ;
 				command.add ("> " + BACKUP_PATH+BACKUP_FILENAME) ;
-				// Créez un processus pour exécuter la commande.
+				// Crée un processus pour exécuter la commande.
 				ProcessBuilder processBuilder = new ProcessBuilder (command) ;
 				// Redirige la sortie de la commande vers un fichier
 				processBuilder.redirectOutput (ProcessBuilder.Redirect.to (new File(BACKUP_PATH+BACKUP_FILENAME))) ;
 				processBuilder.redirectErrorStream (true) ; // Redirige la sortie d'erreur vers la sortie standard
-				Process process = processBuilder.start () ; // Démarrez le processus
-				int exitCode = process.waitFor () ;         // Attendez que le processus se termine
+				Process process = processBuilder.start () ; // Démarre le processus
+				int exitCode = process.waitFor () ;         // Attend que le processus se termine
 				if (exitCode == 0) System.out.println ("Sauvegarde réussie.") ;
 				else System.out.println ("Error : " + exitCode) ;
 			} catch (IOException | InterruptedException ignored) {
-				// Les exceptions sont ignorées.
+				// Les exceptions sont ignorées
 				System.out.println ("Error AU CAS OU") ;
 				System.out.println(ignored.getMessage());
-
 			}
 		}
 

@@ -30,7 +30,6 @@ public class CategoryService implements ICategoryService {
                 .stream()
                 .sorted(Comparator.comparing(Category::getLabel))
                 .map(helper::toCategoryToListItem)
-//                .map(category -> helper.toCategoryToListItem(category))
                 .toList();
     }
 

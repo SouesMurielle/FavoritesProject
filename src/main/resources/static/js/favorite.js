@@ -383,7 +383,7 @@ angular
                 .then(
                     function () {
                         $scope.refresh();
-                        $scope.setMode("favoritesView");
+                        $scope.setMode("categoryView");
                     },
                     function (error) {
                         Swal.fire({
@@ -404,7 +404,7 @@ angular
                 .then(
                     function () {
                         $scope.refresh();
-                        $scope.setMode("favoritesView");
+                        $scope.setMode("categoryView");
                     },
                     function (error) {
                         Swal.fire({

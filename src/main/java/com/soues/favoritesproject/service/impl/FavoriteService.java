@@ -18,6 +18,11 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * A class that receives the business data and sends it to the persistence layer.
+ *
+ * Implements the interface IFavoriteService.
+ */
 @Service
 @Transactional
 public class FavoriteService implements IFavoriteService  {
@@ -90,6 +95,14 @@ public class FavoriteService implements IFavoriteService  {
             return findAllByOrder(SortType.category, SortBy.DESC);
     }
 
+    /**
+     * Creates a new favorite.
+     * Receives FavoriteDefinition DTO params and uses them to create a FavoriteItem object.
+     *
+     * @param definition DTO used to get datas
+     * @param categoryId category id of the favorite
+     * @return FavoriteItem object send to persistence layer and more precisely Favorite entity.
+     */
     @Override
     public FavoriteItem save(FavoriteDefinition definition, Long categoryId) {
         Category category = categoryRepository.findById(categoryId)

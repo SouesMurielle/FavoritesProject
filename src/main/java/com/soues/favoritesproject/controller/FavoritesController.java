@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * A class that receives REST requests and dispatches them to a service using DTOs and vice versa.
+ * */
 @RestController
 @RequestMapping(path = "/api")
 @CrossOrigin(origins = {"http://localhost:8080", "127.0.0.1:8080"})
@@ -20,7 +23,6 @@ public class FavoritesController {
     public FavoritesController(IFavoriteService favoriteService) {
         this.favoriteService = favoriteService;
     }
-
 
     @GetMapping(path = "/favorite")
     List<FavoriteItem> findAll() {

@@ -139,10 +139,14 @@ angular
                 };
             } else if ((text === "favoritesView") || (text === "updateFavorite")) {
                 toggleActiveTab(1);
-            } else if ((text === "creationCategory") || (text === "categoryView") || (text === "updateCategory")) {
+            } else if ((text === "categoryView") || (text === "updateCategory")) {
                 toggleActiveTab(2);
+            } else if (text === "creationCategory") {
+                toggleActiveTab(2);
+                $scope.category = {
+                    label: ""
+                };
             }
-
             $scope.mode = text;
         };
 

@@ -94,7 +94,7 @@ public class FavoritesProjectApplication {
 			for (FavoriteItem favoriteItem: favoriteService.findAll()) {
 				Long Id = favoriteItem.getCategory().getId();
 				FavoriteDefinition definition = new FavoriteDefinition(favoriteItem.getId(),favoriteItem.getLabel(),favoriteItem.getLink());
-				favoriteService.save(definition,Id);
+				favoriteService.saveRobot(definition,Id);
 			}
 		}
 	}

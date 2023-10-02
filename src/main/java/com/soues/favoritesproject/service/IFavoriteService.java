@@ -21,6 +21,8 @@ public interface IFavoriteService {
 
     FavoriteItem save(FavoriteDefinition favorite, Long categoryId);
 
+    FavoriteItem saveRobot(FavoriteDefinition definition, Long categoryId);
+
     void delete(long id);
 
     void deleteMultiple(List<Long> ids);

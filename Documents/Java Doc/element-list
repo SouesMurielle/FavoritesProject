@@ -1,0 +1,9 @@
+com.soues.favoritesproject
+com.soues.favoritesproject.controller
+com.soues.favoritesproject.dto
+com.soues.favoritesproject.exception
+com.soues.favoritesproject.persistence.entity
+com.soues.favoritesproject.persistence.repository
+com.soues.favoritesproject.service
+com.soues.favoritesproject.service.impl
+com.soues.favoritesproject.utils

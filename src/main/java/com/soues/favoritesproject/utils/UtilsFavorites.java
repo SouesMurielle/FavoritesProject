@@ -12,7 +12,8 @@ public class UtilsFavorites {
                 URL url = new URL (lien) ;
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection ();
                 connection.setRequestMethod ("GET") ;
-                if (connection.getResponseCode () == HttpURLConnection.HTTP_OK) {
+                int responseCode = connection.getResponseCode ();
+                if (responseCode >= HttpURLConnection.HTTP_OK && responseCode < HttpURLConnection.HTTP_BAD_REQUEST) {
                     response = true;
                     System.out.println (lien + " --> Status == TRUE");
                 }

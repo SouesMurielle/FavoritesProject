@@ -208,9 +208,9 @@ angular
         $scope.createFavorite = function () {
             var url = $scope.favorite.link;
             // Vérifie si l'URL commence par "http://" ou "https://"
-            if ( ! url.startsWith ("http://") && ! url.startsWith ("https://"))
+            if (!url.startsWith ("http"))
                 // Si ce n'est pas le cas, ajoute "https://"
-                url = "https://" + url ;
+                url = "https://www." + url ;
             // Regex pour valider une URL
             var urlPattern = /^([a-zA-Z0-9]+[\.-:]+?[\/]*)([a-zA-Z0-9]+[\.\/\-\?=\+&%_]?)*([a-zA-Z0-9]+[\/\-\?=\+&%_]?)$/;
             // Test de l'URL / regex
@@ -226,7 +226,7 @@ angular
                     .post("api/" + $scope.favorite.category + "/favorite", {
                         id: null,
                         label: $scope.favorite.label,
-                        link: $scope.favorite.link,
+                        link: url,
                     })
                     .then(
                         function () {
@@ -238,7 +238,7 @@ angular
                                 'success'
                             )
                         },
-                        function (error) {
+                        function () {
                             Swal.fire({
                                 icon : 'error',
                                 title : 'Not created!',
@@ -260,7 +260,7 @@ angular
                         $scope.refresh();
                         $scope.setMode("favoritesView");
                     },
-                    function (error) {
+                    function () {
                         Swal.fire({
                             icon : 'error',
                             title : 'Not updated!',
@@ -353,7 +353,7 @@ angular
                                         'Yours favorites has been deleted.',
                                         'success'
                                     )
-                                }, function(error) {
+                                }, function() {
                                     Swal.fire({
                                         icon : 'error',
                                         title : 'Not deleted!',
@@ -389,7 +389,7 @@ angular
                         $scope.refresh();
                         $scope.setMode("categoryView");
                     },
-                    function (error) {
+                    function () {
                         Swal.fire({
                             icon : 'error',
                             title : 'Not created!',
@@ -410,7 +410,7 @@ angular
                         $scope.refresh();
                         $scope.setMode("categoryView");
                     },
-                    function (error) {
+                    function () {
                         Swal.fire({
                             icon : 'error',
                             title : 'Not updated!',
@@ -439,7 +439,7 @@ angular
                                 'Your category has been deleted.',
                                 'success'
                             );
-                        }, function(error) {
+                        }, function() {
                             Swal.fire({
                                 icon : 'error',
                                 title : 'Not deleted!',

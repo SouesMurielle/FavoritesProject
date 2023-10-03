@@ -1,7 +1,5 @@
 package com.soues.favoritesproject.utils;
 
-import com.soues.favoritesproject.dto.CategoryDefinition;
-import com.soues.favoritesproject.dto.CategoryItem;
 import com.soues.favoritesproject.dto.CategoryListItem;
 import com.soues.favoritesproject.dto.FavoriteItem;
 import com.soues.favoritesproject.persistence.entity.Category;
@@ -33,17 +31,5 @@ public class DTOHelper {
 
     public FavoriteItem toFavoriteItem(Favorite entity) {
         return mapper.map(entity, FavoriteItem.class);
-    }
-
-    public CategoryItem toCategoryItem(Category entity) {
-        return mapper.map(entity, CategoryItem.class);
-    }
-
-    public Favorite toFavorite(FavoriteItem entity) {
-        return mapper.map(entity,Favorite.class);
-    }
-
-    public Category toCategory(CategoryDefinition entity) {
-        return mapper.map(entity, Category.class);
     }
 }

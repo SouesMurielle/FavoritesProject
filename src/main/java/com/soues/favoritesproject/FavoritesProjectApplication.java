@@ -3,90 +3,77 @@ package com.soues.favoritesproject;
 import com.soues.favoritesproject.dto.FavoriteDefinition;
 import com.soues.favoritesproject.dto.FavoriteItem;
 import com.soues.favoritesproject.service.impl.FavoriteService;
+
+import java.io.File ;
+import java.nio.file.Files ;
+import java.nio.file.Paths ;
+import java.time.LocalDateTime ;
+import java.time.format.DateTimeFormatter ;
+import java.util.ArrayList ;
+import java.util.List ;
+import java.util.Timer ;
+import java.util.Calendar ;
+import java.util.TimerTask ;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.*;
-
 @SpringBootApplication
 public class FavoritesProjectApplication {
 
-	@Autowired
-	private static FavoriteService favoriteService;
+  @Autowired
+  private static FavoriteService favoriteService ;
 
 	public FavoritesProjectApplication(FavoriteService favoriteService) {
 		FavoritesProjectApplication.favoriteService = favoriteService;
 	}
 
-	public static void main(String[] args) {
-
-		SpringApplication.run(FavoritesProjectApplication.class, args);
-		Timer timer = new Timer () ;
-		timer.scheduleAtFixedRate (new MinuteTask (favoriteService), 0, 60 * 1000) ; // Une tâche exécutée chaques minutes.
-
+	public static void main (String [] args) {
+		SpringApplication.run (FavoritesProjectApplication.class, args) ;
+		// Declanche Une tache par minutes.
+		new Timer ().scheduleAtFixedRate (new Robot (favoriteService), 0, 60 * 1000) ;
 	}
 
-	static class MinuteTask extends TimerTask {
+	static class Robot extends TimerTask {
 		private final FavoriteService favoriteService;
-
-		MinuteTask(FavoriteService favoriteService) {
-			this.favoriteService = favoriteService;
+		Robot (FavoriteService favoriteService) {
+			this.favoriteService = favoriteService ;
 		}
-
 		@Override
 		public void run () {
-			int nbMinutesToWait = 15;
-			if (new Date().getMinutes () % nbMinutesToWait == 0 ) {
-				System.out.println("=== Début de la validation de chaque lien ===");
-				CheckValidityURL();
-				System.out.println("=== Fin de la validation de chaque lien ===");
-			}
-
+			int minutes = Calendar.getInstance ().get (Calendar.MINUTE) ;
 			int heure = Calendar.getInstance ().get (Calendar.HOUR_OF_DAY) ;
-			if ((heure == 12|| heure == 20) && Calendar.getInstance ().get (Calendar.MINUTE) == 0) {
-				System.out.println("=== Début de la sauvegarde de la BD ===");
-				getDatabaseBackup();
-				System.out.println("=== Fin de la sauvegarde de la BD ===");
-			}
-
+			if (minutes % 15 == 0)
+				CheckValidityURL () ;
+			if ((heure == 8 || heure == 20) && minutes == 3)
+				getDatabaseBackup () ;
 		}
 
-		private static void getDatabaseBackup() {
+		private static void getDatabaseBackup () {
+			System.out.println ("Backup") ;
+			// vérifier si le dossier "Backups" existe et le créer s'il n'existe pas.
+			String pathName = "Backups" ;
+			File dossier = new File (pathName) ;
+			if ( ! Files.isDirectory (Paths.get (pathName))) dossier.mkdir () ;
 			try {
-
-				// Définit les variables de l'utilisateur et de la base a dumper.
-				String MYSQL_USER = "favuser" ;      // "favuser";
-				String MYSQL_PASSWORD = "favuser" ;  // "favuser";
-				String MYSQL_DATABASE = "favorites" ;
-				String BACKUP_FILENAME = "backup.sql";
-				String BACKUP_PATH = "src/main/resources/";
-				// Crée la liste des arguments de la commande
-
+				// Réation du nom du fichier.
+				String currentDate = LocalDateTime.now ().format (DateTimeFormatter.ofPattern ("_yyyy-MM-dd_HH-mm")) ;
+				// création de la commande à passer à mysql.
 				List <String> command = new ArrayList <> () ;
-
 				command.add ("mysqldump") ;
-				command.add ("-u " + MYSQL_USER) ;
-				command.add ("-p" + MYSQL_PASSWORD) ;
-				command.add (MYSQL_DATABASE) ;
-				command.add ("> " + BACKUP_PATH+BACKUP_FILENAME) ;
-				// Crée un processus pour exécuter la commande.
-				ProcessBuilder processBuilder = new ProcessBuilder (command) ;
-				// Redirige la sortie de la commande vers un fichier
-				processBuilder.redirectOutput (ProcessBuilder.Redirect.to (new File(BACKUP_PATH+BACKUP_FILENAME))) ;
-				processBuilder.redirectErrorStream (true) ; // Redirige la sortie d'erreur vers la sortie standard
-				Process process = processBuilder.start () ; // Démarre le processus
-				int exitCode = process.waitFor () ;         // Attend que le processus se termine
-				if (exitCode == 0) System.out.println ("Sauvegarde réussie.") ;
-				else System.out.println ("Error : " + exitCode) ;
-			} catch (IOException | InterruptedException ignored) {
-				// Les exceptions sont ignorées
-				System.out.println ("Error AU CAS OU") ;
-				System.out.println(ignored.getMessage());
+				command.add ("-ufavuser") ;
+				command.add ("-pfavuser") ;
+				command.add ("favorites") ;
+				// Création du processus qui exécute la commande, sa sortie est routé vers le fichier.
+				ProcessBuilder procBuild = new ProcessBuilder (command) ;
+				procBuild.redirectOutput (
+					ProcessBuilder.Redirect.to (
+						new File (pathName + "/" + "favorites" + currentDate + ".sql"
+				))).redirectErrorStream (true) ;
+				procBuild.start ().waitFor () ;
+			} catch (Exception e) {
+				System.out.println ("Probleme de sauvegarde.") ;
 			}
 		}
 
@@ -94,7 +81,7 @@ public class FavoritesProjectApplication {
 			for (FavoriteItem favoriteItem: favoriteService.findAll()) {
 				Long Id = favoriteItem.getCategory().getId();
 				FavoriteDefinition definition = new FavoriteDefinition(favoriteItem.getId(),favoriteItem.getLabel(),favoriteItem.getLink());
-				favoriteService.save(definition,Id);
+				favoriteService.saveRobot(definition,Id);
 			}
 		}
 	}

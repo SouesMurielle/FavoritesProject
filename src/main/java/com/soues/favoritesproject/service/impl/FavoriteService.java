@@ -63,15 +63,15 @@ public class FavoriteService implements IFavoriteService  {
         List<Favorite> list;
 
         if (sortType.equals(SortType.category))
-                if (sortBy.equals(SortBy.ASC))
-                    list = favoriteRepository.findAllByOrderByCategoryLabelAsc();
-                else
-                    list = favoriteRepository.findAllByOrderByCategoryLabelDesc();
-        else
             if (sortBy.equals(SortBy.ASC))
-                list = favoriteRepository.findAllByOrderByDateAsc();
+                list = favoriteRepository.findAllByOrderByCategoryLabelAsc();
             else
-                list = favoriteRepository.findAllByOrderByDateDesc();
+                list = favoriteRepository.findAllByOrderByCategoryLabelDesc();
+        else
+        if (sortBy.equals(SortBy.ASC))
+            list = favoriteRepository.findAllByOrderByDateAsc();
+        else
+            list = favoriteRepository.findAllByOrderByDateDesc();
 
         return list
                 .stream()
@@ -120,9 +120,31 @@ public class FavoriteService implements IFavoriteService  {
         favorite.setCategory(category);
         favorite.setLink(definition.getLink());
         favorite.setLabel(definition.getLabel());
-        if(favorite.getDate()==null){
-            favorite.setDate(new Date());
+        favorite.setDate(new Date());
+        favorite.setValidity(UtilsFavorites.CheckValidityURL(definition.getLink()));
+
+        favorite = favoriteRepository.save(favorite);
+
+        return helper.toFavoriteItem(favorite);
+    }
+
+
+    public FavoriteItem saveRobot(FavoriteDefinition definition, Long categoryId) {
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new NotFoundException("Pas trouvé"));
+
+        Favorite favorite;
+
+        if (definition.getId() != null) {
+            favorite = favoriteRepository.findById(definition.getId())
+                    .orElseThrow(() -> new NotFoundException("Pas trouvé"));
+        } else {
+            favorite = new Favorite();
         }
+
+        favorite.setCategory(category);
+        favorite.setLink(definition.getLink());
+        favorite.setLabel(definition.getLabel());
         favorite.setValidity(UtilsFavorites.CheckValidityURL(definition.getLink()));
 
         favorite = favoriteRepository.save(favorite);

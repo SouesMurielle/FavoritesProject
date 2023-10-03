@@ -22,8 +22,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class FavoritesProjectApplication {
 
-  @Autowired
-  private static FavoriteService favoriteService ;
+	@Autowired
+	private static FavoriteService favoriteService;
 
 	public FavoritesProjectApplication(FavoriteService favoriteService) {
 		FavoritesProjectApplication.favoriteService = favoriteService;
@@ -31,7 +31,7 @@ public class FavoritesProjectApplication {
 
 	public static void main (String [] args) {
 		SpringApplication.run (FavoritesProjectApplication.class, args) ;
-		// Declanche Une tache par minutes.
+		// Declanche Une tache chaque minute.
 		new Timer ().scheduleAtFixedRate (new Robot (favoriteService), 0, 60 * 1000) ;
 	}
 
@@ -40,6 +40,7 @@ public class FavoritesProjectApplication {
 		Robot (FavoriteService favoriteService) {
 			this.favoriteService = favoriteService ;
 		}
+
 		@Override
 		public void run () {
 			int minutes = Calendar.getInstance ().get (Calendar.MINUTE) ;
@@ -57,10 +58,11 @@ public class FavoritesProjectApplication {
 			File dossier = new File (pathName) ;
 			if ( ! Files.isDirectory (Paths.get (pathName))) dossier.mkdir () ;
 			try {
-				// Réation du nom du fichier.
+				// Création du nom du fichier.
 				String currentDate = LocalDateTime.now ().format (DateTimeFormatter.ofPattern ("_yyyy-MM-dd_HH-mm")) ;
 				// création de la commande à passer à mysql.
 				List <String> command = new ArrayList <> () ;
+
 				command.add ("mysqldump") ;
 				command.add ("-ufavuser") ;
 				command.add ("-pfavuser") ;
